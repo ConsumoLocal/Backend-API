@@ -29,10 +29,6 @@ por ayudar el mundo, acompañanos en este emocionante viaje.
 #### Composer
 `composer intall`
 
-## Contribute
-
-We would love you for the contribution to **YourLibraryName**, check the ``LICENSE`` file for more info.
-
 ## Meta
 
 Distributed under the Godlike license. See ``LICENSE`` for more information.
