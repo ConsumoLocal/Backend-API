@@ -45,4 +45,8 @@ class User extends Authenticatable
 
         return $this->api_token;
     }
+
+    public function businesses() {
+        return $this-->$this->hasMany(Business::class, 'user_id');
+    }
 }

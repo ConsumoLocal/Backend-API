@@ -11,7 +11,6 @@ class BusinessesTableSeeder extends Seeder
      */
     public function run()
     {
-        \App\Business::truncate();
         factory(\App\Business::class, '5')->create();
     }
 }

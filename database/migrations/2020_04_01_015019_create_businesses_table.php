@@ -15,6 +15,7 @@ class CreateBusinessesTable extends Migration
     {
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
+            $table->bigInteger('user_id')->unsigned();
             $table->string('name', '200');
             $table->text('description')->nullable();
             $table->string('imageUrl')->nullable();
@@ -23,6 +24,7 @@ class CreateBusinessesTable extends Migration
             $table->string('website', '200');
             $table->string('email', '200');
             $table->string('preferredLink', '400');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }

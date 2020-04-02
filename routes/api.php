@@ -31,3 +31,10 @@ Route::post('logout', 'Auth\LoginController@logout');
 Route::middleware('auth:api')->get('/user', function(Request $request){
     return $request->user();
 });
+
+// BUSINESS
+Route::get('business','BusinessController@getAll');
+
+Route::get('business/{id}','BusinessController@withId');
+
+Route::post('business/','BusinessController@create');
