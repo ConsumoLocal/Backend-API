@@ -19,4 +19,10 @@ class BusinessController extends Controller
     public function create(Request $request) {
         return Business::create($request->all());
     }
+
+//    public function update(Request $request, Business $business) {
+//        $business->update($request->all());
+//
+//        return $response()->json($business, 201);
+//    }
 }

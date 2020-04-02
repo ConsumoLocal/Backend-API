@@ -28,13 +28,18 @@ Route::post('login', 'Auth\LoginController@login');
 
 Route::post('logout', 'Auth\LoginController@logout');
 
-Route::middleware('auth:api')->get('/user', function(Request $request){
-    return $request->user();
-});
+//Route::middleware('auth:api')
+//    ->get('/user', function(Request $request){
+//    return $request->user();
+//});
 
 // BUSINESS
-Route::get('business','BusinessController@getAll');
 
-Route::get('business/{id}','BusinessController@withId');
 
-Route::post('business/','BusinessController@create');
+Route::group(['middleware' => 'auth:api'], function(){
+    Route::get('business','BusinessController@getAll');
+
+    Route::get('business/{id}','BusinessController@withId');
+
+    Route::post('business/','BusinessController@create');
+});
