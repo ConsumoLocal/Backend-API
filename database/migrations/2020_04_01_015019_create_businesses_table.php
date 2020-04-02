@@ -15,14 +15,14 @@ class CreateBusinessesTable extends Migration
     {
         Schema::create('businesses', function (Blueprint $table) {
             $table->id();
-            $table->string('name', '50');
+            $table->string('name', '200');
             $table->text('description')->nullable();
             $table->string('imageUrl')->nullable();
             $table->string('address', '500');
-            $table->string('phone', '15');
-            $table->string('website', '100');
-            $table->string('email', '100');
-            $table->string('preferredLink', '200');
+            $table->string('phone', '30');
+            $table->string('website', '200');
+            $table->string('email', '200');
+            $table->string('preferredLink', '400');
             $table->timestamps();
         });
     }
