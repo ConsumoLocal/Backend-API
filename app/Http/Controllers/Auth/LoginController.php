@@ -4,8 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\ValidationException;
 
 class LoginController extends Controller
 {
@@ -19,8 +20,6 @@ class LoginController extends Controller
     | to conveniently provide its functionality to your applications.
     |
     */
-
-    use AuthenticatesUsers;
 
     /**
      * Where to redirect users after login.
@@ -37,6 +36,38 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            'username' => 'required|string',
+            'password' => 'required|string',
+        ]);
+    }
+
+    protected function credentials(Request $request)
+    {
+        return $request->only('username', 'password');
+    }
+
+    protected function attemptLogin(Request $request)
+    {
+        return $this->guard()->attempt(
+            $this->credentials($request), $request->filled('remember')
+        );
+    }
+
+    protected function guard()
+    {
+        return Auth::guard();
+    }
+
+    protected function sendFailedLoginResponse(Request $request)
+    {
+        throw ValidationException::withMessages([
+            $this->username() => [trans('auth.failed')],
+        ]);
     }
 
     public function login(Request $request)
