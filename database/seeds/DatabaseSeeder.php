@@ -11,7 +11,11 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
+        // REMOVE BEFORE PRODUCTION
         $this->call(UsersTableSeeder::class);
         $this->Call(BusinessesTableSeeder::class);
+
+        /// PRODUCTION
+        $this->call(BusinessStatusSeeder::class);
     }
 }
