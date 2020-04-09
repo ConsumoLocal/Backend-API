@@ -22,7 +22,9 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        return Business::all();
+        $allBusiness = Business::all();
+
+        return response()->json($allBusiness->toArray(), 200);
     }
 
     /**
@@ -34,6 +36,10 @@ class BusinessController extends Controller
     public function store(Request $request)
     {
         $this->validator($request->all())->validate();
+
+        $business = $this->create($request->all());
+
+        return response()->json($business->toArray(), 201);
     }
 
     /**
@@ -45,6 +51,7 @@ class BusinessController extends Controller
     public function show($id)
     {
         return Business::findOrFail($id);
+
     }
 
     /**
@@ -73,7 +80,7 @@ class BusinessController extends Controller
     // Controller internal operations
 
     /**
-     * Get a validator for an incoming registration request.
+     * Get a validator for an incoming business creation request.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
@@ -88,6 +95,28 @@ class BusinessController extends Controller
             'phone'         => ['required', 'max:30'],
             'website'       => ['required'],
             'preferredLink' => ['required'],
+            'email'         => ['required'],
         ]);
+    }
+
+    /**
+     * Create a new Business instance after validation.
+     *
+     * @param  array  $data
+     * @return Business
+     */
+    protected function create(array $data) {
+        return Business::create([
+            'user_id'       => $data['user_id'],
+            'name'          => $data['name'],
+            'description'   => $data['description'],
+            'imageUrl'      => $data['imageUrl'],
+            'address'       => $data['address'],
+            'phone'         => $data['phone'],
+            'website'       => $data['website'],
+            'email'         => $data['email'],
+            'preferredLink' => $data['preferredLink'],
+        ]);
+
     }
 }
