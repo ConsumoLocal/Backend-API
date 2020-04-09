@@ -32,11 +32,11 @@ Route::post('logout', 'Auth\LoginController@logout');
 
 // BUSINESS
 
+Route::get('business','BusinessController@index');
+
+Route::get('business/{id}','BusinessController@show');
 
 Route::group(['middleware' => 'auth:api'], function(){
-    Route::get('business','BusinessController@getAll');
-
-    Route::get('business/{id}','BusinessController@withId');
 
     Route::post('business/','BusinessController@create');
 });
