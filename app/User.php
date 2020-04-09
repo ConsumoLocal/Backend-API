@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class User extends Authenticatable
@@ -26,7 +27,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+        'password', 'remember_token', 'admin',
     ];
 
     /**
@@ -48,5 +49,13 @@ class User extends Authenticatable
 
     public function businesses() {
         return $this-->$this->hasMany(Business::class, 'user_id');
+    }
+
+    public function isAdmin($id) {
+        $isAdmin = DB::table('users')
+            -> select('admin')
+            -> where ('id', '=', $id)
+            ->get();
+        return $isAdmin[0]->admin;
     }
 }
