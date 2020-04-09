@@ -41,14 +41,14 @@ class LoginController extends Controller
     protected function validateLogin(Request $request)
     {
         $request->validate([
-            'username' => 'required|string',
+            $this->username() => 'required|string',
             'password' => 'required|string',
         ]);
     }
 
     protected function credentials(Request $request)
     {
-        return $request->only('username', 'password');
+        return $request->only($this->username(), 'password');
     }
 
     protected function attemptLogin(Request $request)
@@ -61,6 +61,10 @@ class LoginController extends Controller
     protected function guard()
     {
         return Auth::guard();
+    }
+
+    protected function username() {
+        return 'email';
     }
 
     protected function sendFailedLoginResponse(Request $request)
