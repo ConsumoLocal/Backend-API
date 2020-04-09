@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Business extends Model
 {
-    protected $fillable = ['id', 'name', 'description', 'imageUrl', 'address', 'phone', 'website', 'preferredLink'];
+    protected $fillable = ['user_id', 'name', 'description', 'imageUrl', 'address', 'phone', 'website', 'preferredLink'];
 
     protected $hidden = ['email'];
 
