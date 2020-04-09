@@ -27,4 +27,4 @@ Route::post('logout', 'Auth\LoginController@logout');
 
 
 // BUSINESS
-Route::resource('business', 'BusinessController');
+Route::apiResource('business', 'BusinessController');

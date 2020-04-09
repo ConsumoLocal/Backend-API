@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Business;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BusinessController extends Controller
 {
@@ -11,7 +12,7 @@ class BusinessController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api')->except('index')->except('show');
-        $this->middleware('isAdmin')->only(['destroy']);
+        $this->middleware('isAdmin')->only(['destroy', 'update']);
     }
 
     /**
@@ -25,16 +26,6 @@ class BusinessController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create(Request $request)
-    {
-        return Business::create($request->all());
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -42,7 +33,7 @@ class BusinessController extends Controller
      */
     public function store(Request $request)
     {
-        // TODO: Complete store method
+        $this->validator($request->all())->validate();
     }
 
     /**
@@ -54,17 +45,6 @@ class BusinessController extends Controller
     public function show($id)
     {
         return Business::findOrFail($id);
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
@@ -88,5 +68,26 @@ class BusinessController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    // Controller internal operations
+
+    /**
+     * Get a validator for an incoming registration request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function validator(array $data)
+    {
+        return Validator::make($data, [
+            'user_id'       => ['required'],
+            'name'          => ['required'],
+            'description'   => ['required'],
+            'address'       => ['required'],
+            'phone'         => ['required', 'max:30'],
+            'website'       => ['required'],
+            'preferredLink' => ['required'],
+        ]);
     }
 }
