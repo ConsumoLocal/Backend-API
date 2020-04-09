@@ -7,6 +7,13 @@ use Illuminate\Http\Request;
 
 class BusinessController extends Controller
 {
+
+    public function __construct()
+    {
+        $this->middleware('auth')->except('index');
+        $this->middleware('log');
+    }
+
     /**
      * Display a listing of the resource.
      *
