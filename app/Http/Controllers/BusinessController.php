@@ -10,8 +10,7 @@ class BusinessController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth')->except('index');
-        $this->middleware('log');
+        $this->middleware('auth')->except('index')->except('show');
     }
 
     /**
@@ -53,7 +52,7 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        return Business::find($id);
+        return Business::findOrFail($id);
     }
 
     /**
