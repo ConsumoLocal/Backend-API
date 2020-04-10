@@ -17,17 +17,40 @@ class BusinessController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * Display a listing of all business with an active status.
      *
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function index()
     {
         $allBusiness = DB::table('businesses')
             ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
             ->select('businesses.*', 'business_statuses.value')
+            ->where('businesses.status', '=', '1')
             ->get();
 
+        return response()->json($allBusiness->toArray(), 200);
+    }
+
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function showAllWithStatus($status)
+    {
+        if($status == 'all') {
+            $allBusiness = DB::table('businesses')
+                ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
+                ->select('businesses.*', 'business_statuses.value')
+                ->get();
+            return response()->json($allBusiness->toArray(), 200);
+        }
+        $allBusiness = DB::table('businesses')
+            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
+            ->select('businesses.*', 'business_statuses.value')
+            ->where('business_statuses.value', '=', $status)
+            ->get();
         return response()->json($allBusiness->toArray(), 200);
     }
 
@@ -35,7 +58,7 @@ class BusinessController extends Controller
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function store(Request $request)
     {

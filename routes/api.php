@@ -28,3 +28,4 @@ Route::post('logout', 'Auth\LoginController@logout');
 
 // BUSINESS
 Route::apiResource('business', 'BusinessController');
+Route::get('business/status/{status}', 'BusinessController@showAllWithStatus');
