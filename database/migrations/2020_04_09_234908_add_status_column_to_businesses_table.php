@@ -15,7 +15,7 @@ class AddStatusColumnToBusinessesTable extends Migration
     {
         Schema::table('businesses', function (Blueprint $table) {
             $table->bigInteger('status')->unsigned()->default(4);
-            $table->foreign('status')->references('id')->on('business_statuses')->onUpdate();
+            $table->foreign('status')->references('id')->on('business_statuses');
         });
     }
 
