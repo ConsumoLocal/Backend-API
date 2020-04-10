@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Business;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class BusinessController extends Controller
@@ -22,7 +23,10 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        $allBusiness = Business::all();
+        $allBusiness = DB::table('businesses')
+            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
+            ->select('businesses.*', 'business_statuses.value')
+            ->get();
 
         return response()->json($allBusiness->toArray(), 200);
     }
@@ -50,7 +54,16 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        return Business::findOrFail($id);
+        $business = DB::table('businesses')
+            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
+            ->where('businesses.id','=', $id)
+            ->select('businesses.*', 'business_statuses.value')
+            ->get();
+        if (count($business) == 0) {
+            return response()->json(['error' => 'Business not found'], 404);
+        }
+
+        return $business;
 
     }
 
