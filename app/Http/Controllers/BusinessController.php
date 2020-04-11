@@ -66,9 +66,11 @@ class BusinessController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        $business = $this->create($request->all());
+        print_r($request->all());
 
-        return response()->json($business->toArray(), 201);
+//        $business = $this->create($request->all());
+//
+//        return response()->json($business->toArray(), 201);
     }
 
     /**
@@ -134,7 +136,8 @@ class BusinessController extends Controller
             'email'         => ['required'],
             'latitude'      => ['required'],
             'longitude'     => ['required'],
-            'city'          => ['required']
+            'city'          => ['required'],
+            'categories'    => ['required', 'array']
         ]);
     }
 
