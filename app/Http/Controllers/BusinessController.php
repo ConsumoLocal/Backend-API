@@ -26,7 +26,7 @@ class BusinessController extends Controller
         $allBusiness = DB::table('businesses')
             ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
             ->join('cities', 'cities.id', '=', 'businesses.city')
-            ->select('businesses.*', 'business_statuses.value', 'cities.id AS cityId', 'cities.name AS city')
+            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city')
             ->where('businesses.status', '=', '1')
             ->get();
 
@@ -44,14 +44,14 @@ class BusinessController extends Controller
             $allBusiness = DB::table('businesses')
                 ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
                 ->join('cities', 'cities.id', '=', 'businesses.city')
-                ->select('businesses.*', 'business_statuses.value', 'cities.id AS cityId', 'cities.name AS city')
+                ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city')
                 ->get();
             return response()->json($allBusiness->toArray(), 200);
         }
         $allBusiness = DB::table('businesses')
             ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
             ->join('cities', 'cities.id', '=', 'businesses.city')
-            ->select('businesses.*', 'business_statuses.value', 'cities.id AS cityId', 'cities.name AS city')
+            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city')
             ->where('business_statuses.value', '=', $status)
             ->get();
         return response()->json($allBusiness->toArray(), 200);
@@ -83,8 +83,8 @@ class BusinessController extends Controller
         $business = DB::table('businesses')
             ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
             ->join('cities', 'cities.id', '=', 'businesses.city')
+            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city')
             ->where('businesses.id','=', $id)
-            ->select('businesses.*', 'business_statuses.value')
             ->get();
         if (count($business) == 0) {
             return response()->json(['error' => 'Business not found'], 404);
