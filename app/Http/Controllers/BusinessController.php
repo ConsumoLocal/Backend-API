@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Business;
+use App\BusinessCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -66,11 +67,11 @@ class BusinessController extends Controller
     {
         $this->validator($request->all())->validate();
 
-        print_r($request->all());
+//        print_r($request->all());
 
-//        $business = $this->create($request->all());
-//
-//        return response()->json($business->toArray(), 201);
+        $business = $this->create($request->all());
+
+        return response()->json($business->toArray(), 201);
     }
 
     /**
@@ -148,7 +149,8 @@ class BusinessController extends Controller
      * @return Business
      */
     protected function create(array $data) {
-        return Business::create([
+
+        $business = Business::create([
             'user_id'       => $data['user_id'],
             'name'          => $data['name'],
             'description'   => $data['description'],
@@ -159,9 +161,21 @@ class BusinessController extends Controller
             'email'         => $data['email'],
             'preferredLink' => $data['preferredLink'],
             'latitude'      => $data['latitude'],
-            'longitude'      => $data['longitude'],
+            'longitude'     => $data['longitude'],
             'city'      => $data['city'],
         ]);
 
+        // Create categories
+        $categories = $data['categories'];
+
+        foreach ($categories as $id) {
+            BusinessCategory::create([
+                'business'  => $business->id,
+                'category'  => $id
+
+            ]);
+        }
+
+        return $business;
     }
 }
