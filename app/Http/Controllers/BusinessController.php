@@ -7,6 +7,7 @@ use App\BusinessCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use phpDocumentor\Reflection\Types\Collection;
 
 class BusinessController extends Controller
 {
@@ -24,6 +25,20 @@ class BusinessController extends Controller
             ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city');
     }
 
+
+    protected function appendCategories($data) {
+        foreach ($data as $business) {
+            $categories = DB::table('business_categories')
+                ->join('categories', 'categories.id', '=', 'business_categories.category')
+                ->where('business_categories.business', '=', $business->id)
+                ->select('categories.id', 'categories.value')
+                ->get();
+
+            $business->categories = $categories;
+        }
+        return $data;
+    }
+
     /**
      * Display a listing of all business with an active status.
      *
@@ -32,10 +47,11 @@ class BusinessController extends Controller
     public function index()
     {
         $allBusiness = $this->getQuery()
-            ->where('businesses.status', '=', '1')
+            ->where('businesses.status', '=', '4')
             ->get();
+        $finalBusiness = $this->appendCategories($allBusiness);
 
-        return response()->json($allBusiness->toArray(), 200);
+        return response()->json($finalBusiness->toArray(), 200);
     }
 
     /**
@@ -49,12 +65,15 @@ class BusinessController extends Controller
             $allBusiness = $this->getQuery()
                                 ->get();
 
-            return response()->json($allBusiness->toArray(), 200);
+            $finalBusiness = $this->appendCategories($allBusiness);
+
+            return response()->json($finalBusiness->toArray(), 200);
         }
         $allBusiness = $this->getQuery()
             ->where('business_statuses.value', '=', $status)
             ->get();
-        return response()->json($allBusiness->toArray(), 200);
+        $finalBusiness = $this->appendCategories($allBusiness);
+        return response()->json($finalBusiness->toArray(), 200);
     }
 
     /**
@@ -66,8 +85,6 @@ class BusinessController extends Controller
     public function store(Request $request)
     {
         $this->validator($request->all())->validate();
-
-//        print_r($request->all());
 
         $business = $this->create($request->all());
 
@@ -88,8 +105,8 @@ class BusinessController extends Controller
         if (count($business) == 0) {
             return response()->json(['error' => 'Business not found'], 404);
         }
-
-        return $business;
+        $finalBusiness = $this->appendCategories($business);
+        return $finalBusiness;
 
     }
 
