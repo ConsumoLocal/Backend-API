@@ -32,3 +32,7 @@ Route::get('business/status/{status}', 'BusinessController@showAllWithStatus');
 
 // Cities
 Route::apiResource('city', 'CityController');
+
+// Categories
+
+Route::apiResource('category', 'CategoryController');
