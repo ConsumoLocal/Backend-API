@@ -16,6 +16,13 @@ class BusinessController extends Controller
         $this->middleware('isAdmin')->only(['destroy', 'update']);
     }
 
+    protected function getQuery() {
+        return DB::table('businesses')
+            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
+            ->join('cities', 'cities.id', '=', 'businesses.city')
+            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city');
+    }
+
     /**
      * Display a listing of all business with an active status.
      *
@@ -23,10 +30,7 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        $allBusiness = DB::table('businesses')
-            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-            ->join('cities', 'cities.id', '=', 'businesses.city')
-            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city')
+        $allBusiness = $this->getQuery()
             ->where('businesses.status', '=', '1')
             ->get();
 
@@ -41,17 +45,12 @@ class BusinessController extends Controller
     public function showAllWithStatus($status)
     {
         if($status == 'all') {
-            $allBusiness = DB::table('businesses')
-                ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-                ->join('cities', 'cities.id', '=', 'businesses.city')
-                ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city')
-                ->get();
+            $allBusiness = $this->getQuery()
+                                ->get();
+
             return response()->json($allBusiness->toArray(), 200);
         }
-        $allBusiness = DB::table('businesses')
-            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-            ->join('cities', 'cities.id', '=', 'businesses.city')
-            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city')
+        $allBusiness = $this->getQuery()
             ->where('business_statuses.value', '=', $status)
             ->get();
         return response()->json($allBusiness->toArray(), 200);
@@ -80,10 +79,7 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        $business = DB::table('businesses')
-            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-            ->join('cities', 'cities.id', '=', 'businesses.city')
-            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city')
+        $business = $this->getQuery()
             ->where('businesses.id','=', $id)
             ->get();
         if (count($business) == 0) {
