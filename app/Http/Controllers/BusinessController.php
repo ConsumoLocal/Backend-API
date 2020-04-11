@@ -25,7 +25,8 @@ class BusinessController extends Controller
     {
         $allBusiness = DB::table('businesses')
             ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-            ->select('businesses.*', 'business_statuses.value')
+            ->join('cities', 'cities.id', '=', 'businesses.city')
+            ->select('businesses.*', 'business_statuses.value', 'cities.id AS cityId', 'cities.name AS city')
             ->where('businesses.status', '=', '1')
             ->get();
 
@@ -42,13 +43,15 @@ class BusinessController extends Controller
         if($status == 'all') {
             $allBusiness = DB::table('businesses')
                 ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-                ->select('businesses.*', 'business_statuses.value')
+                ->join('cities', 'cities.id', '=', 'businesses.city')
+                ->select('businesses.*', 'business_statuses.value', 'cities.id AS cityId', 'cities.name AS city')
                 ->get();
             return response()->json($allBusiness->toArray(), 200);
         }
         $allBusiness = DB::table('businesses')
             ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-            ->select('businesses.*', 'business_statuses.value')
+            ->join('cities', 'cities.id', '=', 'businesses.city')
+            ->select('businesses.*', 'business_statuses.value', 'cities.id AS cityId', 'cities.name AS city')
             ->where('business_statuses.value', '=', $status)
             ->get();
         return response()->json($allBusiness->toArray(), 200);
@@ -79,6 +82,7 @@ class BusinessController extends Controller
     {
         $business = DB::table('businesses')
             ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
+            ->join('cities', 'cities.id', '=', 'businesses.city')
             ->where('businesses.id','=', $id)
             ->select('businesses.*', 'business_statuses.value')
             ->get();
@@ -132,6 +136,9 @@ class BusinessController extends Controller
             'website'       => ['required'],
             'preferredLink' => ['required'],
             'email'         => ['required'],
+            'latitude'      => ['required'],
+            'longitude'     => ['required'],
+            'city'          => ['required']
         ]);
     }
 
@@ -152,6 +159,9 @@ class BusinessController extends Controller
             'website'       => $data['website'],
             'email'         => $data['email'],
             'preferredLink' => $data['preferredLink'],
+            'latitude'      => $data['latitude'],
+            'longitude'      => $data['longitude'],
+            'city'      => $data['city'],
         ]);
 
     }
