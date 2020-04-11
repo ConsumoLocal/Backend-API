@@ -192,6 +192,7 @@ class BusinessController extends Controller
 
             ]);
         }
+        $business->categories = $categories;
 
         return $business;
     }
