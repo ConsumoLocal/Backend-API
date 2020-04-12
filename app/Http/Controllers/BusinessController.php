@@ -88,8 +88,8 @@ class BusinessController extends Controller
         $this->validator($request->all())->validate();
 
         $business = $this->create($request->all());
-
-        return response()->json($business->toArray(), 201);
+//
+//        return response()->json($business->toArray(), 201);
     }
 
     /**
@@ -196,6 +196,11 @@ class BusinessController extends Controller
      */
     protected function create(array $data) {
 
+
+
+
+
+        return
         $business = Business::create([
             'user_id'       => $data['user_id'],
             'name'          => $data['name'],
@@ -208,7 +213,7 @@ class BusinessController extends Controller
             'preferredLink' => $data['preferredLink'],
             'latitude'      => $data['latitude'],
             'longitude'     => $data['longitude'],
-            'city'      => $data['city'],
+            'city'          => $data['city'],
         ]);
 
         // Create categories
@@ -222,6 +227,20 @@ class BusinessController extends Controller
             ]);
         }
         $business->categories = $categories;
+
+        // Create tags
+
+        if(isset($data['tags'])) {
+            $tags = $data['tags'];
+
+            $tagsController = new TagController();
+            foreach ($tags as $tag) {
+                $id = $tagsController->store($tag);
+                // TODO: insert id in business tag table
+            }
+
+            $business->tags = $tags;
+        }
 
         return $business;
     }
