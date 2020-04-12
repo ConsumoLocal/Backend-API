@@ -19,7 +19,7 @@ class BusinessController extends Controller
         $this->middleware('isAdmin')->only(['destroy', 'update']);
     }
 
-    protected function getQuery() {
+    public function getQuery() {
         return DB::table('businesses')
             ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
             ->join('cities', 'cities.id', '=', 'businesses.city')
@@ -27,7 +27,7 @@ class BusinessController extends Controller
     }
 
 
-    protected function appendCategories($data) {
+    public function appendCategories($data) {
         foreach ($data as $business) {
             $categories = DB::table('business_categories')
                 ->join('categories', 'categories.id', '=', 'business_categories.category')

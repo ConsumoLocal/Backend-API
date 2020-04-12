@@ -36,3 +36,5 @@ Route::apiResource('city', 'CityController');
 // Categories
 
 Route::apiResource('category', 'CategoryController');
+
+Route::get('user/{id}/businesses', 'UserController@getBusinesses');
