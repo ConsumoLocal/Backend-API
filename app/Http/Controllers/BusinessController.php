@@ -88,8 +88,8 @@ class BusinessController extends Controller
         $this->validator($request->all())->validate();
 
         $business = $this->create($request->all());
-//
-//        return response()->json($business->toArray(), 201);
+
+        return response()->json($business->toArray(), 201);
     }
 
     /**
@@ -196,11 +196,6 @@ class BusinessController extends Controller
      */
     protected function create(array $data) {
 
-
-
-
-
-        return
         $business = Business::create([
             'user_id'       => $data['user_id'],
             'name'          => $data['name'],
@@ -229,14 +224,15 @@ class BusinessController extends Controller
         $business->categories = $categories;
 
         // Create tags
-
+        // Only inserts tags that are not already created
         if(isset($data['tags'])) {
             $tags = $data['tags'];
 
             $tagsController = new TagController();
+            $businessTag = new BusinessTagController();
             foreach ($tags as $tag) {
                 $id = $tagsController->store($tag);
-                // TODO: insert id in business tag table
+                $businessTag->saveTag($business->id, $id);
             }
 
             $business->tags = $tags;
