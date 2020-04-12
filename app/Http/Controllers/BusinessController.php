@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Business;
 use App\BusinessCategory;
+use App\BusinessStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
@@ -15,7 +16,7 @@ class BusinessController extends Controller
     public function __construct()
     {
         $this->middleware('auth:api')->except('index')->except('show');
-        $this->middleware('isAdmin')->only(['destroy', 'update']);
+        $this->middleware('isAdmin')->only(['destroy']);
     }
 
     protected function getQuery() {
@@ -119,7 +120,22 @@ class BusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->statusValidator($request->all())->validate();
+
+        $business = Business::find($id);
+
+        $data = $request->all();
+        $idStatus = DB::table('business_statuses')
+            ->select('id')
+            ->where('value', '=', $data['status'])
+            ->get();
+
+        $status = $idStatus->first();
+        $business->status = $status->id;
+        $business->save();
+
+        return response()->json($this->show($id), 202);
+
     }
 
     /**
@@ -156,6 +172,19 @@ class BusinessController extends Controller
             'longitude'     => ['required'],
             'city'          => ['required'],
             'categories'    => ['required', 'array']
+        ]);
+    }
+
+    /**
+     * Get a validator for an incoming business creation request.
+     *
+     * @param  array  $data
+     * @return \Illuminate\Contracts\Validation\Validator
+     */
+    protected function statusValidator(array $data)
+    {
+        return Validator::make($data, [
+            'status'   => ['required'],
         ]);
     }
 
