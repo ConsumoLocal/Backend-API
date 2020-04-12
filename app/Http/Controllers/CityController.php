@@ -62,4 +62,15 @@ class CityController extends Controller
     {
         return response('', 501);
     }
+
+    public function getBusinesses($id) {
+        $businessController = new BusinessController();
+        $businesses = $businessController->getQuery()
+            ->where('city', '=', $id)
+            ->get();
+
+        $finalBusiness = $businessController->appendCategories($businesses);
+
+        return response()->json($finalBusiness->toArray(), 200);
+    }
 }

@@ -65,9 +65,6 @@ class UserController extends Controller
         $finalBusiness = $businessController->appendCategories($businesses);
 
         return response()->json($finalBusiness->toArray(), 200);
-
-
-
     }
 
     /**

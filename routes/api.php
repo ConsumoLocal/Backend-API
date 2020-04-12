@@ -33,6 +33,8 @@ Route::get('business/status/{status}', 'BusinessController@showAllWithStatus');
 // Cities
 Route::apiResource('city', 'CityController');
 
+Route::get('city/{id}/businesses', 'CityController@getBusinesses');
+
 // Categories
 
 Route::apiResource('category', 'CategoryController');
