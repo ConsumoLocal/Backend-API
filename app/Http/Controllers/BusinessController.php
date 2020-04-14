@@ -55,11 +55,11 @@ class BusinessController extends Controller
     public function index()
     {
         $allBusiness = $this->getQuery()
-            ->where('businesses.status', '=', '4')
+            ->where('businesses.status', '=', 'Active')
             ->get();
-        $finalBusiness = $this->appendCategories($allBusiness);
+        $finalBusiness = $this->businessElementsQuery($allBusiness);
 
-        return response()->json($allBusiness->toArray(), 200);
+        return response()->json($finalBusiness->toArray(), 200);
     }
 
     /**
@@ -82,7 +82,7 @@ class BusinessController extends Controller
         $allBusiness = $this->getQuery()
             ->where('business_statuses.value', '=', $status)
             ->get();
-        $finalBusiness = $this->appendCategories($allBusiness);
+        $finalBusiness = $this->businessElementsQuery($allBusiness);
         return response()->json($finalBusiness->toArray(), 200);
     }
 
@@ -98,7 +98,7 @@ class BusinessController extends Controller
 
         $business = $this->create($request->all());
 
-        return response()->json($business->toArray(), 201);
+        return response()->json($this->show($business->id), 201);
     }
 
     /**
@@ -115,7 +115,7 @@ class BusinessController extends Controller
         if (count($business) == 0) {
             return response()->json(['error' => 'Business not found'], 404);
         }
-        $finalBusiness = $this->appendCategories($business);
+        $finalBusiness = $this->businessElementsQuery($business);
         return $finalBusiness;
 
     }
