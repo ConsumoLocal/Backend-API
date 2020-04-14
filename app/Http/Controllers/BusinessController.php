@@ -26,18 +26,25 @@ class BusinessController extends Controller
             ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city');
     }
 
-
-    public function appendCategories($data) {
-        foreach ($data as $business) {
+    public function businessElementsQuery($businesses) {
+        foreach ($businesses as $business) {
             $categories = DB::table('business_categories')
                 ->join('categories', 'categories.id', '=', 'business_categories.category')
                 ->where('business_categories.business', '=', $business->id)
                 ->select('categories.id', 'categories.value')
                 ->get();
 
+            $tags = DB::table('business_tags')
+                ->join('tags', 'business_tags.tag', '=', 'tags.id')
+                ->where('business_tags.business', '=', $business->id )
+                ->select('tags.value AS tag')
+                ->get();
+
+            $business->tags = $tags;
+
             $business->categories = $categories;
         }
-        return $data;
+        return $businesses;
     }
 
     /**
@@ -52,7 +59,7 @@ class BusinessController extends Controller
             ->get();
         $finalBusiness = $this->appendCategories($allBusiness);
 
-        return response()->json($finalBusiness->toArray(), 200);
+        return response()->json($allBusiness->toArray(), 200);
     }
 
     /**
@@ -66,7 +73,9 @@ class BusinessController extends Controller
             $allBusiness = $this->getQuery()
                                 ->get();
 
-            $finalBusiness = $this->appendCategories($allBusiness);
+
+
+            $finalBusiness = $this->businessElementsQuery($allBusiness);
 
             return response()->json($finalBusiness->toArray(), 200);
         }
