@@ -74,7 +74,7 @@ class CityController extends Controller
             ->where('city', '=', $id)
             ->get();
 
-        $finalBusiness = $businessController->appendCategories($businesses);
+        $finalBusiness = $businessController->businessElementsQuery($businesses);
 
         return response()->json($finalBusiness->toArray(), 200);
     }
