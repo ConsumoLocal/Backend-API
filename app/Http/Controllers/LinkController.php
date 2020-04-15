@@ -11,12 +11,12 @@ class LinkController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api')->except('getImage');
+        $this->middleware('auth:api');
         $this->middleware('isAdmin')->only(['destroy', 'update', 'store']);
     }
 
     public function getImage($id) {
-        $link = Link::find($id);
+        $link = Link::findOrFail($id);
 
         $headers = [
             "Content-Type: image/png"
