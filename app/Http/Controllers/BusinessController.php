@@ -8,6 +8,7 @@ use App\BusinessStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use Intervention\Image\Facades\Image;
 use phpDocumentor\Reflection\Types\Collection;
 
 class BusinessController extends Controller
@@ -45,6 +46,10 @@ class BusinessController extends Controller
             $business->categories = $categories;
         }
         return $businesses;
+    }
+
+    public function uploadImage(Request $request) {
+        response('', '502');
     }
 
     /**
