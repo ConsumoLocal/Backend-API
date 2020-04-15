@@ -4,14 +4,25 @@ namespace App\Http\Controllers;
 
 use App\Link;
 use Illuminate\Http\Request;
+use Intervention\Image\Facades\Image;
 
 class LinkController extends Controller
 {
 
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api')->except('getImage');
         $this->middleware('isAdmin')->only(['destroy', 'update', 'store']);
+    }
+
+    public function getImage($id) {
+        $link = Link::find($id);
+
+        $headers = [
+            "Content-Type: image/png"
+        ];
+
+        return response()->file(storage_path().'/app/'.$link->imagePath, $headers)->setStatusCode('200');
     }
 
     /**

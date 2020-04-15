@@ -44,3 +44,5 @@ Route::get('user/{id}/businesses', 'UserController@getBusinesses');
 // Links
 
 Route::apiResource('link', 'LinkController');
+
+Route::get('link/{id}/image', 'LinkController@getImage');
