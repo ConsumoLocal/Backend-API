@@ -42,9 +42,18 @@ class BusinessController extends Controller
                 ->select('tags.value AS tag')
                 ->get();
 
+            $links = DB::table('business_links')
+                ->join('links', 'links.id', '=', 'business_links.link')
+                ->join('link_data_types', 'link_data_types.id', '=', 'links.data_type')
+                ->where('business_links.business', '=', $business->id)
+                ->select('links.name', 'links.imagePath AS imageUrl', 'link_data_types.value AS DataType', 'business_links.value')
+                ->get();
+
             $business->tags = $tags;
 
             $business->categories = $categories;
+
+            $business->links = $links;
         }
         return $businesses;
     }
