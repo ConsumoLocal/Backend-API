@@ -33,6 +33,30 @@ class CategoryController extends Controller
         return response()->json($categories, 200);
     }
 
+    public function business(Request $request) {
+        if (isset($request->all()['categories'])) {
+            $categories = $request->all()['categories'];
+            $businessController = new BusinessController();
+            $finalBusiness = array();
+            $businesses = DB::table('businesses')
+                ->join('business_categories', 'business_categories.business', '=', 'businesses.id')
+                ->join('categories', 'categories.id', '=', 'business_categories.category')
+                ->whereIn('categories.id', $categories)
+                ->orWhereIn('categories.parent', $categories)
+                ->select('businesses.id', 'categories.id AS category')
+                ->get();
+
+            foreach ($businesses as $business) {
+                $completeBusiness = $businessController->show($business->id);
+                array_push($finalBusiness, $completeBusiness);
+            }
+            return response()->json($finalBusiness, 200);
+        } else {
+            return response()->json(['error' => 'No categories array provided'], 422);
+        }
+
+    }
+
     /**
      * Store a newly created resource in storage.
      *

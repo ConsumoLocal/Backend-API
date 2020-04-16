@@ -40,7 +40,9 @@ Route::get('city/{id}/businesses', 'CityController@getBusinesses');
 // Categories
 
 Route::apiResource('category', 'CategoryController');
+Route::post('category/businesses', 'CategoryController@business');
 
+// User
 Route::get('user/{id}/businesses', 'UserController@getBusinesses');
 
 // Links
