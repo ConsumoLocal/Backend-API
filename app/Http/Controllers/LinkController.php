@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Link;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Intervention\Image\Facades\Image;
 
 class LinkController extends Controller
@@ -32,7 +33,11 @@ class LinkController extends Controller
      */
     public function index()
     {
-        return Link::all();
+        $links = DB::table('links')
+            ->join('link_data_types', 'links.data_type', '=', 'link_data_types.id')
+            ->select('links.id','links.name','links.imagePath', 'link_data_types.value AS dataType')
+            ->get();
+        return response()->json($links->toArray(), 200);
     }
 
     /**
