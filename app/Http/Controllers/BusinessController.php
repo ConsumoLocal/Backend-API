@@ -204,7 +204,10 @@ class BusinessController extends Controller
             'latitude'      => ['required'],
             'longitude'     => ['required'],
             'city'          => ['required'],
-            'categories'    => ['required', 'array']
+            'categories'    => ['required', 'array'],
+            'links'         => ['required', 'array'],
+            'links.*.link'  => ['required'],
+            'links.*.value'  => ['required'],
         ]);
     }
 
@@ -218,6 +221,14 @@ class BusinessController extends Controller
     {
         return Validator::make($data, [
             'status'   => ['required'],
+        ]);
+    }
+
+    protected function LinksValidator(array $data)
+    {
+        return Validator::make($data, [
+            'serviceId'   => ['required'],
+            'value'       => ['required']
         ]);
     }
 
@@ -269,6 +280,17 @@ class BusinessController extends Controller
             }
 
             $business->tags = $tags;
+        }
+
+        // Create links
+        if(isset($data['links'])) {
+            $linksController = new BusinessLinkController();
+            $links = $data['links'];
+            foreach ($links as $link) {
+                $linksController->store($business->id, $link['link'], $link['value']);
+            }
+
+            $business->links = $links;
         }
 
         return $business;
