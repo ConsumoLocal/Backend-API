@@ -30,6 +30,7 @@ Route::post('logout', 'Auth\LoginController@logout');
 Route::apiResource('business', 'BusinessController');
 Route::get('business/status/{status}', 'BusinessController@showAllWithStatus');
 Route::post('business/image/upload', 'BusinessController@uploadImage');
+Route::get('business/{business}/image', 'BusinessController@getImage');
 
 // Cities
 Route::apiResource('city', 'CityController');

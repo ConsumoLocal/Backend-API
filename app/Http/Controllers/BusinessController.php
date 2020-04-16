@@ -7,6 +7,7 @@ use App\BusinessCategory;
 use App\BusinessStatus;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use phpDocumentor\Reflection\Types\Collection;
@@ -49,7 +50,25 @@ class BusinessController extends Controller
     }
 
     public function uploadImage(Request $request) {
-        response('', '502');
+        if ($request->hasFile('image')) {
+            $path = Storage::putFile('business', $request->file('image'));
+            return response()->json(['imagePath' => $path], 201);
+        } else {
+            return response()->json(['error' => 'Missing image file'], 422);
+        }
+    }
+
+    public function getImage($id) {
+        $business = Business::findOrFail($id);
+        $headers = [
+            "Content-Type: image/png"
+        ];
+
+        if (isset($business->imageUrl)) {
+            return response()->file(storage_path().'/app/'.$business->imageUrl, $headers)->setStatusCode('200');
+        } else {
+            return response()->json(['error' => 'Missing image file'], 417);
+        }
     }
 
     /**

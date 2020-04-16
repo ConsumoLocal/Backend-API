@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Auth\AuthenticationException;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Validation\UnauthorizedException;
 use Throwable;
@@ -56,7 +57,13 @@ class Handler extends ExceptionHandler
             $request->wantsJson())
         {
             return response()->json([
-                'data' => 'Resource not found'
+                'error' => 'Resource not found'
+            ], 404);
+        }
+
+        if ($exception instanceof FileNotFoundException) {
+            return response()->json([
+                'error' => 'The requested file could not be found'
             ], 404);
         }
         return parent::render($request, $exception);
