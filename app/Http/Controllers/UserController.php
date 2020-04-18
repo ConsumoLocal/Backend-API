@@ -62,7 +62,7 @@ class UserController extends Controller
             ->where('user_id', '=', $id)
             ->get();
 
-        $finalBusiness = $businessController->appendCategories($businesses);
+        $finalBusiness = $businessController->businessElementsQuery($businesses);
 
         return response()->json($finalBusiness->toArray(), 200);
     }
