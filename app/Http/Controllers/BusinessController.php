@@ -54,14 +54,6 @@ class BusinessController extends Controller
             $business->categories = $categories;
 
             $business->links = $links;
-
-            if (file_exists(storage_path().'/app/'.$business->imageUrl)) {
-
-                $file = file_get_contents(storage_path().'/app/'.$business->imageUrl);
-                $business->image = base64_encode($file);
-
-            }
-
         }
         return $businesses;
     }
