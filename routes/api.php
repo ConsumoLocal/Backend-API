@@ -44,6 +44,7 @@ Route::post('category/businesses', 'CategoryController@business');
 
 // User
 Route::get('user/{id}/businesses', 'UserController@getBusinesses');
+Route::post('user/password/recover', 'Auth\ForgotPasswordController@sendResetLinkEmail');
 
 // Links
 
