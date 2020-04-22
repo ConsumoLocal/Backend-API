@@ -72,6 +72,7 @@ class CityController extends Controller
         $businessController = new BusinessController();
         $businesses = $businessController->getQuery()
             ->where('city', '=', $id)
+            ->where('status', '=', 1)
             ->get();
 
         $finalBusiness = $businessController->businessElementsQuery($businesses);
