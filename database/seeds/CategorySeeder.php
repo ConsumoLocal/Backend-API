@@ -75,106 +75,249 @@ class CategorySeeder extends Seeder
                 'value' => 'Comida Corrida',
                 'parent' => 1
             ],
-            // SERVICIOS
             [
                 'id' => 14,
+                'value' => 'Arabe',
+                'parent' => 1
+            ],
+            [
+                'id' => 15,
+                'value' => 'Mediterranea',
+                'parent' => 1
+            ],
+            [
+                'id' => 16,
+                'value' => 'Española',
+                'parent' => 1
+            ],
+            [
+                'id' => 17,
+                'value' => 'Vietnamita',
+                'parent' => 1
+            ],
+            [
+                'id' => 18,
+                'value' => 'Pasteles',
+                'parent' => 1
+            ],
+            [
+                'id' => 19,
+                'value' => 'Gourmet',
+                'parent' => 1
+            ],
+            [
+                'id' => 20,
+                'value' => 'Jugos y Licuados',
+                'parent' => 1
+            ],
+            [
+                'id' => 21,
+                'value' => 'Brasileña',
+                'parent' => 1
+            ],
+            [
+                'id' => 22,
+                'value' => 'Vegetariana',
+                'parent' => 1
+            ],
+            // SERVICIOS
+            [
+                'id' => 23,
                 'value' => 'Carpintería',
                 'parent' => 2
             ],
             [
-                'id' => 15,
+                'id' => 24,
                 'value' => 'Cerrajería',
                 'parent' => 2
             ],
             [
-                'id' => 16,
+                'id' => 25,
                 'value' => 'Diseño',
                 'parent' => 2
             ],
             [
-                'id' => 17,
+                'id' => 26,
                 'value' => 'Psicología',
                 'parent' => 2
             ],
             [
-                'id' => 18,
+                'id' => 27,
                 'value' => 'Impresiones',
                 'parent' => 2
             ],
             [
-                'id' => 19,
+                'id' => 28,
                 'value' => 'Plomero',
                 'parent' => 2
             ],
             [
-                'id' => 20,
+                'id' => 29,
                 'value' => 'Nutriología',
                 'parent' => 2
             ],
             [
-                'id' => 21,
+                'id' => 30,
                 'value' => 'Fontanería',
+                'parent' => 2
+            ],
+            [
+                'id' => 31,
+                'value' => 'Farmacia',
+                'parent' => 2
+            ],
+            [
+                'id' => 32,
+                'value' => 'Académicos',
+                'parent' => 2
+            ],
+            [
+                'id' => 33,
+                'value' => 'Veterinario',
+                'parent' => 2
+            ],
+            [
+                'id' => 34,
+                'value' => 'Medicina',
+                'parent' => 2
+            ],
+            [
+                'id' => 35,
+                'value' => 'Reparación',
+                'parent' => 2
+            ],
+            [
+                'id' => 36,
+                'value' => 'Construcción',
+                'parent' => 2
+            ],
+            [
+                'id' => 37,
+                'value' => 'Instalación',
+                'parent' => 2
+            ],
+            [
+                'id' => 38,
+                'value' => 'Mecánica',
+                'parent' => 2
+            ],
+            [
+                'id' => 39,
+                'value' => 'Papelería',
+                'parent' => 2
+            ],
+            [
+                'id' => 40,
+                'value' => 'Digital',
+                'parent' => 2
+            ],
+            [
+                'id' => 41,
+                'value' => 'Transporte',
+                'parent' => 2
+            ],
+            [
+                'id' => 42,
+                'value' => 'Profesionistas',
+                'parent' => 2
+            ],
+            [
+                'id' => 43,
+                'value' => 'Equipo Médico',
+                'parent' => 2
+            ],
+            [
+                'id' => 44,
+                'value' => 'Psicología',
                 'parent' => 2
             ],
 
             // OTROS
             [
-                'id' => 22,
-                'value' => 'Ropa',
+                'id' => 45,
+                'value' => 'Moda',
                 'parent' => 3
             ],
             [
-                'id' => 23,
+                'id' => 46,
                 'value' => 'Calzado',
                 'parent' => 3
             ],
             [
-                'id' => 24,
+                'id' => 47,
                 'value' => 'Abarrotes',
                 'parent' => 3
             ],
             [
-                'id' => 25,
-                'value' => 'Productos de Limpieza',
+                'id' => 48,
+                'value' => 'Limpieza',
                 'parent' => 3
             ],
             [
-                'id' => 26,
+                'id' => 49,
                 'value' => 'Equipo Médico',
                 'parent' => 3
             ],
             [
-                'id' => 27,
+                'id' => 50,
                 'value' => 'Papelería',
                 'parent' => 3
             ],
             [
-                'id' => 28,
+                'id' => 51,
                 'value' => 'Insumos',
                 'parent' => 3
             ],
             [
-                'id' => 29,
+                'id' => 52,
                 'value' => 'Joyería',
                 'parent' => 3
             ],
             [
-                'id' => 30,
+                'id' => 53,
                 'value' => 'Reparación de Eléctronicos',
                 'parent' => 3
             ],
             [
-                'id' => 31,
+                'id' => 54,
                 'value' => 'Fotografía',
                 'parent' => 3
             ],
             [
-                'id' => 32,
-                'value' => 'Otros',
+                'id' => 55,
+                'value' => 'Farmacia',
                 'parent' => 3
             ],
-
-
+            [
+                'id' => 56,
+                'value' => 'Perecederos',
+                'parent' => 3
+            ],
+            [
+                'id' => 57,
+                'value' => 'Deportes',
+                'parent' => 3
+            ],
+            [
+                'id' => 58,
+                'value' => 'Estilo de vida',
+                'parent' => 3
+            ],
+            [
+                'id' => 59,
+                'value' => 'Arte',
+                'parent' => 3
+            ],
+            [
+                'id' => 60,
+                'value' => 'Ocio',
+                'parent' => 3
+            ],
+            [
+                'id' => 61,
+                'value' => 'Otros',
+                'parent' => 3
+            ]
         ];
 
         foreach ($categories as $category) {
