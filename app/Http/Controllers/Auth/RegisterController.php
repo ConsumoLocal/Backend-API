@@ -8,7 +8,9 @@ use App\User;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
+use Psy\Util\Str;
 
 class RegisterController extends Controller
 {
@@ -68,6 +70,7 @@ class RegisterController extends Controller
             'name'      => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'email_verification_token' => \Illuminate\Support\Str::random(32)
         ]);
 
     }
