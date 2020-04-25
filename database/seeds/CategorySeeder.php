@@ -22,7 +22,7 @@ class CategorySeeder extends Seeder
             ],
             [
                 'id' => 3,
-                'value' => 'Otros'
+                'value' => 'Productos'
             ],
             // COMIDA
             [
@@ -228,93 +228,108 @@ class CategorySeeder extends Seeder
             ],
             [
                 'id' => 44,
-                'value' => 'Psicología',
+                'value' => 'Enfermería',
+                'parent' => 2
+            ],
+            [
+                'id' => 45,
+                'value' => 'Asistencia Médica',
+                'parent' => 2
+            ],
+            [
+                'id' => 46,
+                'value' => 'Reparación de Electrónicos',
+                'parent' => 2
+            ],
+            [
+                'id' => 47,
+                'value' => 'Fotografía',
+                'parent' => 2
+            ],
+            [
+                'id' => 48,
+                'value' => 'Mercadotecnia',
+                'parent' => 2
+            ],
+            [
+                'id' => 64,
+                'value' => 'Odontología',
                 'parent' => 2
             ],
 
-            // OTROS
+            // Productos
             [
-                'id' => 45,
+                'id' => 49,
                 'value' => 'Moda',
                 'parent' => 3
             ],
             [
-                'id' => 46,
+                'id' => 50,
                 'value' => 'Calzado',
                 'parent' => 3
             ],
             [
-                'id' => 47,
+                'id' => 51,
                 'value' => 'Abarrotes',
                 'parent' => 3
             ],
             [
-                'id' => 48,
+                'id' => 52,
                 'value' => 'Limpieza',
                 'parent' => 3
             ],
             [
-                'id' => 49,
+                'id' => 53,
                 'value' => 'Equipo Médico',
                 'parent' => 3
             ],
             [
-                'id' => 50,
+                'id' => 54,
                 'value' => 'Papelería',
                 'parent' => 3
             ],
             [
-                'id' => 51,
-                'value' => 'Insumos',
-                'parent' => 3
-            ],
-            [
-                'id' => 52,
-                'value' => 'Joyería',
-                'parent' => 3
-            ],
-            [
-                'id' => 53,
-                'value' => 'Reparación de Eléctronicos',
-                'parent' => 3
-            ],
-            [
-                'id' => 54,
-                'value' => 'Fotografía',
-                'parent' => 3
-            ],
-            [
                 'id' => 55,
-                'value' => 'Farmacia',
+                'value' => 'Insumos Alimenticios',
                 'parent' => 3
             ],
             [
                 'id' => 56,
-                'value' => 'Perecederos',
+                'value' => 'Joyería',
                 'parent' => 3
             ],
             [
                 'id' => 57,
-                'value' => 'Deportes',
+                'value' => 'Farmacia',
                 'parent' => 3
             ],
             [
                 'id' => 58,
-                'value' => 'Estilo de vida',
+                'value' => 'Perecederos',
                 'parent' => 3
             ],
             [
                 'id' => 59,
-                'value' => 'Arte',
+                'value' => 'Deportes',
                 'parent' => 3
             ],
             [
                 'id' => 60,
-                'value' => 'Ocio',
+                'value' => 'Estilo de vida',
                 'parent' => 3
             ],
             [
                 'id' => 61,
+                'value' => 'Arte',
+                'parent' => 3
+            ],
+            [
+                'id' => 62,
+                'value' => 'Ocio',
+                'parent' => 3
+            ],
+            [
+                'id' => 63,
                 'value' => 'Otros',
                 'parent' => 3
             ]
