@@ -80,10 +80,7 @@ class LoginController extends Controller
         if ($this->attemptLogin($request)) {
             $user = $this->guard()->user();
             $user->generateToken();
-
-            return response()->json([
-                'data' => $user->toArray(),
-            ]);
+            return response()->json($user->toArray(), 200);
         }
 
         return $this->sendFailedLoginResponse($request);
@@ -98,7 +95,7 @@ class LoginController extends Controller
             $user->save();
         }
 
-        return response()->json(['data' => 'User logged out.'], 200);
+        return response()->json(['message' => 'User logged out'], 200);
     }
 
 }
