@@ -14,7 +14,7 @@ class AddVerificationHashToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->string('email_verification_token', '32')->nullable();
         });
     }
 
@@ -26,7 +26,7 @@ class AddVerificationHashToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            //
+            $table->dropColumn('email_verification_token');
         });
     }
 }
