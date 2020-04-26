@@ -29,6 +29,7 @@ class BusinessController extends Controller
     }
 
     // TODO: Use ELOQUENT to delete for iterations
+    //TODO: return preferred link as link
     public function businessElementsQuery($businesses) {
         foreach ($businesses as $business) {
             $categories = DB::table('business_categories')
@@ -47,7 +48,7 @@ class BusinessController extends Controller
                 ->join('links', 'links.id', '=', 'business_links.link')
                 ->join('link_data_types', 'link_data_types.id', '=', 'links.data_type')
                 ->where('business_links.business', '=', $business->id)
-                ->select('links.name', 'links.imagePath AS imageUrl', 'link_data_types.value AS dataType', 'business_links.value')
+                ->select('links.name', 'links.imagePath AS imageUrl', 'link_data_types.value AS dataType', 'business_links.value', 'business_links.id')
                 ->get();
 
             $business->tags = $tags;
