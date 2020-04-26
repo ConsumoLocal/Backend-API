@@ -14,8 +14,6 @@ $factory->define(Business::class, function (Faker $faker) {
         'description'   => $faker->text,
         'imageUrl'      => $faker->url,
         'address'       => $faker->address,
-        'phone'         => $faker->phoneNumber,
-        'website'       => $faker->url,
         'email'         => $faker->unique()->companyEmail,
         'preferredLink' => $faker->url,
         'latitude'      => $faker->latitude,

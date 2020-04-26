@@ -12,8 +12,6 @@ class Business extends Model
         'description',
         'imageUrl',
         'address',
-        'phone',
-        'website',
         'email',
         'preferredLink',
         'status',

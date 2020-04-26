@@ -206,8 +206,7 @@ class BusinessController extends Controller
             'name'          => ['required'],
             'description'   => ['required'],
             'address'       => ['required'],
-            'phone'         => ['required', 'max:30'],
-            'website'       => ['required'],
+            //TODO: Set preferred link id from link table
             'preferredLink' => ['required'],
             'email'         => ['required'],
             'latitude'      => ['required'],
@@ -255,8 +254,6 @@ class BusinessController extends Controller
             'description'   => $data['description'],
             'imageUrl'      => $data['imageUrl'],
             'address'       => $data['address'],
-            'phone'         => $data['phone'],
-            'website'       => $data['website'],
             'email'         => $data['email'],
             'preferredLink' => $data['preferredLink'],
             'latitude'      => $data['latitude'],
