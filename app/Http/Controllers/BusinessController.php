@@ -28,6 +28,7 @@ class BusinessController extends Controller
             ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city');
     }
 
+    // TODO: Use ELOQUENT to delete for iterations
     public function businessElementsQuery($businesses) {
         foreach ($businesses as $business) {
             $categories = DB::table('business_categories')
