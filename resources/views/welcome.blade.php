@@ -81,7 +81,7 @@
 
     <div class="content">
         <div class="title m-b-md">
-            Consumo Local - Test Server
+            Consumo Local
         </div>
                 <div class="links">
                     <a href="../">Página Principal</a>
