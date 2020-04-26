@@ -41,6 +41,7 @@ class ResetPassword extends Notification
      */
     public function toMail($notifiable)
     {
+        echo env('MAIL_USERNAME');
         return (new MailMessage)
                     ->from(env('MAIL_USERNAME'))
                     ->subject('Notification email test')
