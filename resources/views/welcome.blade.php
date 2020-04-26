@@ -83,10 +83,10 @@
         <div class="title m-b-md">
             Consumo Local - Test Server
         </div>
-
-        <div class="links">
-            <a href="./MoonCorp/">MoonCorp</a>
-            <a href="https://github.com/luisLuna24" target="_blank">GitHub</a>
+                <div class="links">
+                    <a href="../">Página Principal</a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
