@@ -74,21 +74,21 @@ class LoginController extends Controller
         ]);
     }
 
+    // TODO: Create tokens table to support multiple individual sessions
+    // middleware auth
     public function login(Request $request)
     {
         $this->validateLogin($request);
         if ($this->attemptLogin($request)) {
             $user = $this->guard()->user();
             $user->generateToken();
-
-            return response()->json([
-                'data' => $user->toArray(),
-            ]);
+            return response()->json($user->toArray(), 200);
         }
 
         return $this->sendFailedLoginResponse($request);
     }
 
+    // TODO: Logout only one session instead of killing all
     public function logout(Request $request)
     {
         $user = Auth::guard('api')->user();
@@ -98,7 +98,7 @@ class LoginController extends Controller
             $user->save();
         }
 
-        return response()->json(['data' => 'User logged out.'], 200);
+        return response()->json(['message' => 'User logged out'], 200);
     }
 
 }
