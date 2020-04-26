@@ -25,6 +25,10 @@ Route::post('login', 'Auth\LoginController@login');
 
 Route::post('logout', 'Auth\LoginController@logout');
 
+Route::get('user/password/recover', 'Auth\ForgotPasswordController@sendResetLinkEmail');
+/// When user has already the token
+Route::post('user/password/reset', 'Auth\ResetPasswordController@reset');
+
 
 // BUSINESS
 Route::apiResource('business', 'BusinessController');
