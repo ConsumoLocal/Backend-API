@@ -9,4 +9,5 @@ class Link extends Model
     protected $fillable = ['name', 'imagePath'];
 
     public $timestamps = false;
+    // TODO: Upload link images to server
 }
