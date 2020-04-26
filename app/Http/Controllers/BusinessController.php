@@ -259,7 +259,7 @@ class BusinessController extends Controller
             $preferedLink = null;
             foreach ($links as $link) {
                 $businessLinkId = $linksController->store($business->id, $link['link'], $link['value']);
-                if($link['id'] == $data['preferredLink']) {
+                if(isset($data['preferredLink']) && isset($link['id']) && $link['id'] == $data['preferredLink']) {
                     $business->preferredLink = $businessLinkId;
                     $business->save();
                 }
