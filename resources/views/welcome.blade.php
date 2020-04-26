@@ -85,8 +85,7 @@
                 </div>
 
                 <div class="links">
-                    <a href="./MoonCorp/">MoonCorp</a>
-                    <a href="https://github.com/luisLuna24">GitHub</a>
+                    <a href="../">Página Principal</a>
                 </div>
             </div>
         </div>
