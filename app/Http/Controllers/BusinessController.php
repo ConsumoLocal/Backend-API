@@ -208,7 +208,6 @@ class BusinessController extends Controller
             'description'   => ['required'],
             'address'       => ['required'],
             //TODO: Set preferred link id from link table
-            'preferredLink' => ['required'],
             'email'         => ['required'],
             'latitude'      => ['required'],
             'longitude'     => ['required'],
@@ -233,14 +232,6 @@ class BusinessController extends Controller
         ]);
     }
 
-    protected function LinksValidator(array $data)
-    {
-        return Validator::make($data, [
-            'serviceId'   => ['required'],
-            'value'       => ['required']
-        ]);
-    }
-
     /**
      * Create a new Business instance after validation.
      *
@@ -256,7 +247,6 @@ class BusinessController extends Controller
             'imageUrl'      => $data['imageUrl'],
             'address'       => $data['address'],
             'email'         => $data['email'],
-            'preferredLink' => $data['preferredLink'],
             'latitude'      => $data['latitude'],
             'longitude'     => $data['longitude'],
             'city'          => $data['city'],
@@ -293,8 +283,13 @@ class BusinessController extends Controller
         if(isset($data['links'])) {
             $linksController = new BusinessLinkController();
             $links = $data['links'];
+            $preferedLink = null;
             foreach ($links as $link) {
-                $linksController->store($business->id, $link['link'], $link['value']);
+                $businessLinkId = $linksController->store($business->id, $link['link'], $link['value']);
+                if($link->id == $data['preferredLink']) {
+                    $business->preferredLink = $businessLinkId;
+                    $business::save();
+                }
             }
 
             $business->links = $links;
