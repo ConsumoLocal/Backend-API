@@ -25,12 +25,12 @@ class BusinessLinkController extends Controller
      */
     public function store($business, $link, $value)
     {
-        $id = BusinessLink::create([
+        $link = BusinessLink::create([
             'business' => $business,
             'link'      => $link,
             'value'     => $value
         ]);
-        return $id;
+        return $link->id;
     }
 
     /**

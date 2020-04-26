@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class ChangePreferredLinkToId extends Migration
+class CreatePreferredLinkColumnForeingOfBusinessLink extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class ChangePreferredLinkToId extends Migration
     public function up()
     {
         Schema::table('businesses', function (Blueprint $table) {
-            //
+            $table->bigInteger('preferredLink')->unsigned()->nullable();
+            $table->foreign('preferredLink')->references('id')->on('business_links');
         });
     }
 
@@ -26,7 +27,7 @@ class ChangePreferredLinkToId extends Migration
     public function down()
     {
         Schema::table('businesses', function (Blueprint $table) {
-            //
+            $table->dropColumn('preferredLink');
         });
     }
 }

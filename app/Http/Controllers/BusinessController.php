@@ -239,7 +239,7 @@ class BusinessController extends Controller
      * @return Business
      */
     protected function create(array $data) {
-
+        DB::beginTransaction();
         $business = Business::create([
             'user_id'       => $data['user_id'],
             'name'          => $data['name'],
@@ -251,6 +251,22 @@ class BusinessController extends Controller
             'longitude'     => $data['longitude'],
             'city'          => $data['city'],
         ]);
+
+        // Create links
+        if(isset($data['links'])) {
+            $linksController = new BusinessLinkController();
+            $links = $data['links'];
+            $preferedLink = null;
+            foreach ($links as $link) {
+                $businessLinkId = $linksController->store($business->id, $link['link'], $link['value']);
+                if($link['id'] == $data['preferredLink']) {
+                    $business->preferredLink = $businessLinkId;
+                    $business->save();
+                }
+            }
+
+            $business->links = $links;
+        }
 
         // Create categories
         $categories = $data['categories'];
@@ -279,22 +295,7 @@ class BusinessController extends Controller
             $business->tags = $tags;
         }
 
-        // Create links
-        if(isset($data['links'])) {
-            $linksController = new BusinessLinkController();
-            $links = $data['links'];
-            $preferedLink = null;
-            foreach ($links as $link) {
-                $businessLinkId = $linksController->store($business->id, $link['link'], $link['value']);
-                if($link->id == $data['preferredLink']) {
-                    $business->preferredLink = $businessLinkId;
-                    $business::save();
-                }
-            }
-
-            $business->links = $links;
-        }
-
+        DB::commit();
         return $business;
     }
 }
