@@ -71,6 +71,12 @@ class LinkSeeder extends Seeder
                 'name' => 'Teléfono',
                 'imagePath' => 'links/telefono.png',
                 'data_type' => '2'
+            ],
+            [
+            'id' => '11',
+            'name' => 'Página Web',
+            'imagePath' => 'links/website.png',
+            'data_type' => '1'
             ]
         ];
 
