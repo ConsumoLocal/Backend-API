@@ -63,6 +63,7 @@ class ResetPasswordController extends Controller
     {
         return [
             'token' => 'required',
+            'email' => 'required|email',
             'password' => 'required|min:8',
         ];
     }
@@ -86,7 +87,7 @@ class ResetPasswordController extends Controller
     protected function credentials(Request $request)
     {
         return $request->only(
-             'password', 'token'
+            'email', 'password', 'password_confirmation', 'token'
         );
     }
 
