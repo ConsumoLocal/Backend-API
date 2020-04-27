@@ -41,13 +41,13 @@ class ResetPassword extends Notification
      */
     public function toMail($notifiable)
     {
-        echo env('MAIL_USERNAME');
+        $email = env('MAIL_USERNAME');
         return (new MailMessage)
                     ->from(env('MAIL_USERNAME'))
-                    ->subject('Notification email test')
+                    ->subject('Recuperación de Contraseña')
                     ->line('First email test')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+                    ->action('Reestablecer Ahora', url('/password/reset_token/$notifiable'))
+                    ->line('Gracias por ser parte de Consumo Local !');
     }
 
     /**
