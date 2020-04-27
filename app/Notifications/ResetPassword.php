@@ -53,7 +53,7 @@ class ResetPassword extends Notification
                     ->from($email, 'Consumo Local')
                     ->subject('Recuperación de Contraseña')
                     ->greeting('Hola !')
-                    ->line('Haz solicitado reestablecer tu contraseña, si tu no hiciste esta solicitud omite este mensaje.')
+                    ->line('Haz solicitado reestablecer tu contraseña, si tu no realizaste esta solicitud, puedes omitir este mensaje.')
                     ->action('Reestablecer Ahora', url('/password/reset_token/' . $token->token))
                     ->line('Gracias por ser parte de Consumo Local !');
 
