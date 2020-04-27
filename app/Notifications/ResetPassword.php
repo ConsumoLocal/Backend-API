@@ -45,8 +45,8 @@ class ResetPassword extends Notification
     public function toMail($notifiable)
     {
         $email = env('MAIL_USERNAME');
-        $token = DB::table('passwords_resets')
-            ->where('passwords_resets.email', '=', $notifiable->email)
+        $token = DB::table('password_resets')
+            ->where('email', '=', $notifiable->email)
             ->select('token')
             ->first();
         return (new MailMessage)
