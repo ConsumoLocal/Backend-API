@@ -54,7 +54,7 @@ class ResetPassword extends Notification
                     ->subject('Recuperación de Contraseña')
                     ->greeting('Hola !')
                     ->line('First email test')
-                    ->action('Reestablecer Ahora', url('/password/reset_token/' . $token))
+                    ->action('Reestablecer Ahora', url('/password/reset_token/' . $token->token))
                     ->line('El link solamente será válido durante 10 minutos.')
 
                     ->line('Gracias por ser parte de Consumo Local !');
