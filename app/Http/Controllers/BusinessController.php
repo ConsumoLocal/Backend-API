@@ -17,7 +17,7 @@ class BusinessController extends Controller
 
     public function __construct()
     {
-        $this->middleware('auth:api');
+        $this->middleware('auth:api')->except('getImage');
         $this->middleware('isAdmin')->only(['destroy', 'update']);
     }
 
