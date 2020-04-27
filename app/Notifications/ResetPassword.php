@@ -12,7 +12,6 @@ class ResetPassword extends Notification
 {
     use Queueable;
 
-    protected $token = '';
 
 
     /**
@@ -22,7 +21,8 @@ class ResetPassword extends Notification
      */
     public function __construct($token)
     {
-        $this->$token = $token;
+        echo 'Construct token' . $token;
+
     }
 
     /**
