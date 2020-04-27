@@ -43,7 +43,7 @@ class ResetPassword extends Notification
     {
         $email = env('MAIL_USERNAME');
         return (new MailMessage)
-                    ->from(env('MAIL_USERNAME'))
+                    ->from('contacto@consumolocalmxn.com')
                     ->subject('Recuperación de Contraseña')
                     ->line('First email test')
                     ->action('Reestablecer Ahora', url('/password/reset_token/$notifiable'))
