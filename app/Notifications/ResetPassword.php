@@ -7,6 +7,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
+use Illuminate\Support\Facades\DB;
 
 class ResetPassword extends Notification
 {
@@ -19,9 +20,8 @@ class ResetPassword extends Notification
      *
      * @return void
      */
-    public function __construct($token)
+    public function __construct()
     {
-        echo 'Construct token' . $token;
 
     }
 
@@ -45,12 +45,16 @@ class ResetPassword extends Notification
     public function toMail($notifiable)
     {
         $email = env('MAIL_USERNAME');
+        $token = DB::table('passwords_resets')
+            ->where('passwords_resets.email', '=', $notifiable->email)
+            ->select('token')
+            ->first();
         return (new MailMessage)
                     ->from($email)
                     ->subject('Recuperación de Contraseña')
                     ->greeting('Hola !')
                     ->line('First email test')
-                    ->action('Reestablecer Ahora', url('/password/reset_token/' . $this->$token))
+                    ->action('Reestablecer Ahora', url('/password/reset_token/' . $token))
                     ->line('El link solamente será válido durante 10 minutos.')
 
                     ->line('Gracias por ser parte de Consumo Local !');
