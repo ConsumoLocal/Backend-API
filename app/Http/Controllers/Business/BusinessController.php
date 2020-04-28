@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Business;
 
 use App\Business;
 use App\BusinessCategory;
-use App\BusinessStatus;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
@@ -208,7 +208,6 @@ class BusinessController extends Controller
             'name'          => ['required'],
             'description'   => ['required'],
             'address'       => ['required'],
-            //TODO: Set preferred link id from link table
             'email'         => ['required'],
             'latitude'      => ['required'],
             'longitude'     => ['required'],

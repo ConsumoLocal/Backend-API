@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\City;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Business\BusinessController;
 
 class CityController extends Controller
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Business;
 
-use App\BusinessStatus;
+use App\BusinessCategory;
 use Illuminate\Http\Request;
 
-class BusinessStatusController extends Controller
+class BusinessCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -13,16 +13,6 @@ class BusinessStatusController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
     {
         //
     }
@@ -41,21 +31,10 @@ class BusinessStatusController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\BusinessStatus  $businessStatus
+     * @param  \App\BusinessCategory  $businessCategory
      * @return \Illuminate\Http\Response
      */
-    public function show(BusinessStatus $businessStatus)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\BusinessStatus  $businessStatus
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(BusinessStatus $businessStatus)
+    public function show(BusinessCategory $businessCategory)
     {
         //
     }
@@ -64,10 +43,10 @@ class BusinessStatusController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\BusinessStatus  $businessStatus
+     * @param  \App\BusinessCategory  $businessCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BusinessStatus $businessStatus)
+    public function update(Request $request, BusinessCategory $businessCategory)
     {
         //
     }
@@ -75,10 +54,10 @@ class BusinessStatusController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\BusinessStatus  $businessStatus
+     * @param  \App\BusinessCategory  $businessCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BusinessStatus $businessStatus)
+    public function destroy(BusinessCategory $businessCategory)
     {
         //
     }
