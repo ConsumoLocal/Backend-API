@@ -6,6 +6,7 @@ use App\Business;
 use App\BusinessCategory;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
@@ -89,12 +90,13 @@ class BusinessController extends Controller
      */
     public function index()
     {
-        $allBusiness = $this->getQuery()
-            ->where('businesses.status', '=', 'Active')
-            ->get();
-        $finalBusiness = $this->businessElementsQuery($allBusiness);
-
-        return response()->json($finalBusiness->toArray(), 200);
+//        $allBusiness = $this->getQuery()
+//            ->where('businesses.status', '=', 'Active')
+//            ->get();
+//        $finalBusiness = $this->businessElementsQuery($allBusiness);
+//
+//        return response()->json($finalBusiness->toArray(), 200);
+        return Business::all();
     }
 
     /**

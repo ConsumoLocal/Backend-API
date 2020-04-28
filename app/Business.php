@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Scopes\ActiveBusinessScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
@@ -22,6 +23,11 @@ class Business extends Model
         'longitude',
         'city'
     ];
+
+    public static function booted()
+    {
+        static::addGlobalScope(new ActiveBusinessScope());
+    }
 
     protected $hidden = ['email', 'deleted_at'];
 
