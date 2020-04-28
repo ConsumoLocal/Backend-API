@@ -185,12 +185,17 @@ class BusinessController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Business  $business
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy($id)
+    public function destroy(Business $business)
     {
-        //
+        if (request()->user()->id == $business->user_id || request()->user()->admin) {
+            $business->delete();
+            return response()->json(['Message' => 'Business Deleted'], 202);
+        } else {
+            return response()->json(['error' => 'You do not have permission to delete this business'], 401);
+        }
     }
 
     // Controller internal operations

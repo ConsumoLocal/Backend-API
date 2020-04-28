@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Business extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
         'user_id',
         'name',
@@ -20,7 +23,7 @@ class Business extends Model
         'city'
     ];
 
-    protected $hidden = ['email'];
+    protected $hidden = ['email', 'deleted_at'];
 
     public function user() {
         return $this->belongsTo(User::class, 'user_id');
