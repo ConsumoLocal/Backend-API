@@ -22,15 +22,11 @@ class BusinessController extends Controller
         $this->middleware('isAdmin')->only(['destroy', 'update']);
     }
 
+    ///
     public function getQuery() {
-        return DB::table('businesses')
-            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-            ->join('cities', 'cities.id', '=', 'businesses.city')
-            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city');
+        return Business::with(['city', 'status', 'categories', 'tags']);
     }
 
-    // TODO: Use ELOQUENT to delete for iterations
-    //TODO: return preferred link as link
     public function businessElementsQuery($businesses) {
         foreach ($businesses as $business) {
             $categories = DB::table('business_categories')
@@ -90,13 +86,11 @@ class BusinessController extends Controller
      */
     public function index()
     {
-//        $allBusiness = $this->getQuery()
-//            ->where('businesses.status', '=', 'Active')
-//            ->get();
-//        $finalBusiness = $this->businessElementsQuery($allBusiness);
-//
-//        return response()->json($finalBusiness->toArray(), 200);
-        return Business::all();
+        $allBusiness = $this->getQuery()
+            ->get();
+        //$finalBusiness = $this->businessElementsQuery($allBusiness);
+
+        return response()->json($allBusiness->toArray(), 200);
     }
 
     /**

@@ -3,7 +3,9 @@
 namespace App\Http\Controllers\Business;
 
 use App\BusinessLink;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class BusinessLinkController extends Controller
 {
@@ -51,9 +53,25 @@ class BusinessLinkController extends Controller
      * @param  \App\BusinessLink  $businessLink
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BusinessLink $businessLink)
+    public function update(Request $request, $linkId)
     {
-        //
+        // TODO: finish link update
+        print_r($linkId);
+        $this->linkValueValidator($request->all())->validate();
+
+//        if (request()->user()->id == $businessLink->business()->user_id || request()->user()->admin) {
+//            $businessLink->value = $request->all()['value'];
+//            $businessLink->save();
+//            return response()->json($businessLink, 201);
+//        } else {
+//            return response()->json(['Error' => 'Missing value'], 201);
+//        }
+    }
+
+    function linkValueValidator($data) {
+        return Validator::make($data, [
+            'value'   => ['required'],
+        ]);
     }
 
     /**

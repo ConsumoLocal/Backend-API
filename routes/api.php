@@ -55,3 +55,6 @@ Route::post('user/password/recover', 'Auth\ForgotPasswordController@sendResetLin
 Route::apiResource('link', 'LinkController');
 
 Route::get('link/{id}/image', 'LinkController@getImage');
+
+// Business links
+Route::put('link/{id}', 'Business\BusinessLinkController@update');
