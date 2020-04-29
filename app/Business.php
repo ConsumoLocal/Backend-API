@@ -29,7 +29,7 @@ class Business extends Model
         static::addGlobalScope(new ActiveBusinessScope());
     }
 
-    protected $hidden = ['email', 'deleted_at', 'pivot'];
+    protected $hidden = ['deleted_at', 'pivot'];
 
     public function user() {
         return $this->belongsTo(User::class, 'id', 'user_id');
