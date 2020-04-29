@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Business;
 use App\Business;
 use App\BusinessCategory;
 use App\Http\Controllers\Controller;
+use App\Scopes\ActiveBusinessScope;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
@@ -24,33 +25,19 @@ class BusinessController extends Controller
 
     ///
     public function getQuery() {
+
         return Business::with(['city', 'status', 'categories', 'tags']);
+
     }
 
     public function businessElementsQuery($businesses) {
         foreach ($businesses as $business) {
-            $categories = DB::table('business_categories')
-                ->join('categories', 'categories.id', '=', 'business_categories.category')
-                ->where('business_categories.business', '=', $business->id)
-                ->select('categories.id', 'categories.value')
-                ->get();
-
-            $tags = DB::table('business_tags')
-                ->join('tags', 'business_tags.tag', '=', 'tags.id')
-                ->where('business_tags.business', '=', $business->id )
-                ->select('tags.value AS tag')
-                ->get();
-
             $links = DB::table('business_links')
                 ->join('links', 'links.id', '=', 'business_links.link')
                 ->join('link_data_types', 'link_data_types.id', '=', 'links.data_type')
                 ->where('business_links.business', '=', $business->id)
                 ->select('links.name', 'links.imagePath AS imageUrl', 'link_data_types.value AS dataType', 'business_links.value', 'business_links.id')
                 ->get();
-
-            $business->tags = $tags;
-
-            $business->categories = $categories;
 
             $business->links = $links;
         }
@@ -88,7 +75,7 @@ class BusinessController extends Controller
     {
         $allBusiness = $this->getQuery()
             ->get();
-        //$finalBusiness = $this->businessElementsQuery($allBusiness);
+        $allBusiness = $this->businessElementsQuery($allBusiness);
 
         return response()->json($allBusiness->toArray(), 200);
     }
@@ -101,14 +88,12 @@ class BusinessController extends Controller
     public function showAllWithStatus($status)
     {
         if($status == 'all') {
-            $allBusiness = $this->getQuery()
-                                ->get();
+            $allBusiness = Business::withoutGlobalScopes()
+                ->with(['city', 'status', 'categories', 'tags'])
+                ->get();
 
-
-
-            $finalBusiness = $this->businessElementsQuery($allBusiness);
-
-            return response()->json($finalBusiness->toArray(), 200);
+            $allBusiness = $this->businessElementsQuery($allBusiness);
+            return response()->json($allBusiness->toArray(), 200);
         }
         $allBusiness = $this->getQuery()
             ->where('business_statuses.value', '=', $status)
