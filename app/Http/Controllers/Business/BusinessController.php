@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use phpDocumentor\Reflection\Types\Collection;
+use App\Http\Controllers\TagController;
 
 class BusinessController extends Controller
 {
