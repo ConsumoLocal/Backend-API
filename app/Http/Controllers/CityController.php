@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Business;
 use App\City;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Business\BusinessController;
@@ -77,11 +78,8 @@ class CityController extends Controller
         $businessController = new BusinessController();
         $businesses = $businessController->getQuery()
             ->where('city', '=', $id)
-            ->where('status', '=', 1)
             ->get();
 
-        $finalBusiness = $businessController->businessElementsQuery($businesses);
-
-        return response()->json($finalBusiness->toArray(), 200);
+        return response()->json($businesses->toArray(), 200);
     }
 }
