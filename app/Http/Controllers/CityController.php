@@ -80,6 +80,8 @@ class CityController extends Controller
             ->where('city', '=', $id)
             ->get();
 
+        $businesses = $businessController->businessElementsQuery($businesses);
+
         return response()->json($businesses->toArray(), 200);
     }
 }
