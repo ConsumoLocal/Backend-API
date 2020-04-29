@@ -21,6 +21,8 @@ class CityController extends Controller
     public function index()
     {
         $cities = City::all();
+        $cities = $cities->makeVisible(['latitude', 'longitude']);
+
         return response()->json($cities->toArray(), 200);
     }
 
@@ -43,7 +45,9 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        return City::findOrFail($id);
+        $city = City::findOrFail($id);
+        $city = $city->makeVisible(['latitude', 'longitude']);
+        return response($city, 200);
     }
 
     /**

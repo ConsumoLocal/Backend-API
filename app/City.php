@@ -8,9 +8,8 @@ class City extends Model
 {
     protected $fillable = ['id', 'name', 'latitude', 'longitude'];
 
-    public $timestamps = false;
+    protected $hidden = ['latitude', 'longitude'];
 
-    public function businesses() {
-        return $this->hasMany(Business::class, 'id');
-    }
+
+    public $timestamps = false;
 }
