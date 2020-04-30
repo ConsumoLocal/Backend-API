@@ -172,8 +172,9 @@ class BusinessController extends Controller
      * @param  Business  $business
      * @return \Illuminate\Http\JsonResponse
      */
-    public function destroy(Business $business)
+    public function destroy($id)
     {
+        $business = Business::withoutGlobalScopes()->findOrFail($id);
         if (request()->user()->id == $business->user_id || request()->user()->admin) {
             $business->delete();
             return response()->json(['Message' => 'Business Deleted'], 202);
