@@ -150,7 +150,7 @@ class BusinessController extends Controller
     {
         $this->statusValidator($request->all())->validate();
 
-        $business = Business::find($id);
+        $business = Business::withoutGlobalScopes()->findOrFail($id);
 
         $data = $request->all();
         $idStatus = DB::table('business_statuses')
