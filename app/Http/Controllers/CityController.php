@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Business;
 use App\City;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Business\BusinessController;
 
 class CityController extends Controller
 {
@@ -20,6 +22,8 @@ class CityController extends Controller
     public function index()
     {
         $cities = City::all();
+        $cities = $cities->makeVisible(['latitude', 'longitude']);
+
         return response()->json($cities->toArray(), 200);
     }
 
@@ -42,7 +46,9 @@ class CityController extends Controller
      */
     public function show($id)
     {
-        return City::findOrFail($id);
+        $city = City::findOrFail($id);
+        $city = $city->makeVisible(['latitude', 'longitude']);
+        return response($city, 200);
     }
 
     /**
@@ -72,11 +78,10 @@ class CityController extends Controller
         $businessController = new BusinessController();
         $businesses = $businessController->getQuery()
             ->where('city', '=', $id)
-            ->where('status', '=', 1)
             ->get();
 
-        $finalBusiness = $businessController->businessElementsQuery($businesses);
+        $businesses = $businessController->businessElementsQuery($businesses);
 
-        return response()->json($finalBusiness->toArray(), 200);
+        return response()->json($businesses->toArray(), 200);
     }
 }

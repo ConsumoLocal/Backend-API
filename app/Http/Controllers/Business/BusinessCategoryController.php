@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Business;
 
-use App\BusinessLink;
+use App\BusinessCategory;
 use Illuminate\Http\Request;
 
-class BusinessLinkController extends Controller
+class BusinessCategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -23,23 +23,18 @@ class BusinessLinkController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store($business, $link, $value)
+    public function store(Request $request)
     {
-        $link = BusinessLink::create([
-            'business' => $business,
-            'link'      => $link,
-            'value'     => $value
-        ]);
-        return $link->id;
+        //
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\BusinessLink  $businessLink
+     * @param  \App\BusinessCategory  $businessCategory
      * @return \Illuminate\Http\Response
      */
-    public function show(BusinessLink $businessLink)
+    public function show(BusinessCategory $businessCategory)
     {
         //
     }
@@ -48,10 +43,10 @@ class BusinessLinkController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\BusinessLink  $businessLink
+     * @param  \App\BusinessCategory  $businessCategory
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, BusinessLink $businessLink)
+    public function update(Request $request, BusinessCategory $businessCategory)
     {
         //
     }
@@ -59,10 +54,10 @@ class BusinessLinkController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\BusinessLink  $businessLink
+     * @param  \App\BusinessCategory  $businessCategory
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BusinessLink $businessLink)
+    public function destroy(BusinessCategory $businessCategory)
     {
         //
     }

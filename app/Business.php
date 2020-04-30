@@ -2,11 +2,16 @@
 
 namespace App;
 
+use App\Scopes\ActiveBusinessScope;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Business extends Model
 {
+    use SoftDeletes;
+
     protected $fillable = [
+        'id',
         'user_id',
         'name',
         'description',
@@ -20,19 +25,36 @@ class Business extends Model
         'city'
     ];
 
-    protected $hidden = ['email'];
+    public static function booted()
+    {
+        static::addGlobalScope(new ActiveBusinessScope());
+    }
+
+    protected $hidden = ['deleted_at', 'pivot'];
 
     public function user() {
-        return $this->belongsTo(User::class, 'user_id');
+        return $this->belongsTo(User::class, 'id', 'user_id');
     }
 
     public function city() {
-        return $this->belongsTo(City::class, 'city');
+        return $this->hasOne(City::class, 'id', 'city');
     }
 
     public function status() {
-        echo 'HERE BABY';
-        echo $this->hasOne(BusinessStatus::class, 'status');
-        return $this->hasOne(BusinessStatus::class, 'status');
+        return $this->hasOne(BusinessStatus::class, 'id', 'status');
+    }
+
+    public function categories() {
+        return $this->belongsToMany(Category::class,
+            'business_categories',
+            'business',
+            'category');
+    }
+
+    public function tags() {
+        return $this->belongsToMany(Tag::class,
+        'business_tags',
+        'business',
+        'tag');
     }
 }

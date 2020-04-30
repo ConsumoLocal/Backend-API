@@ -31,10 +31,10 @@ Route::post('user/password/reset', 'Auth\ResetPasswordController@reset');
 
 
 // BUSINESS
-Route::apiResource('business', 'BusinessController');
-Route::get('business/status/{status}', 'BusinessController@showAllWithStatus');
-Route::post('business/image/upload', 'BusinessController@uploadImage');
-Route::get('business/{business}/image', 'BusinessController@getImage');
+Route::apiResource('business', 'Business\BusinessController');
+Route::get('business/status/{status}', 'Business\BusinessController@showAllWithStatus');
+Route::post('business/image/upload', 'Business\BusinessController@uploadImage');
+Route::get('business/{business}/image', 'Business\BusinessController@getImage');
 
 // Cities
 Route::apiResource('city', 'CityController');
@@ -55,3 +55,6 @@ Route::post('user/password/recover', 'Auth\ForgotPasswordController@sendResetLin
 Route::apiResource('link', 'LinkController');
 
 Route::get('link/{id}/image', 'LinkController@getImage');
+
+// Business links
+Route::put('link/{id}', 'Business\BusinessLinkController@update');

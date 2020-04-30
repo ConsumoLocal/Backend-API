@@ -1,16 +1,19 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Business;
 
 use App\Business;
 use App\BusinessCategory;
-use App\BusinessStatus;
+use App\Http\Controllers\Controller;
+use App\Scopes\ActiveBusinessScope;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Bus;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use phpDocumentor\Reflection\Types\Collection;
+use App\Http\Controllers\TagController;
 
 class BusinessController extends Controller
 {
@@ -21,39 +24,21 @@ class BusinessController extends Controller
         $this->middleware('isAdmin')->only(['destroy', 'update']);
     }
 
+    ///
     public function getQuery() {
-        return DB::table('businesses')
-            ->join('business_statuses', 'businesses.status', '=', 'business_statuses.id')
-            ->join('cities', 'cities.id', '=', 'businesses.city')
-            ->select('businesses.*', 'business_statuses.value AS status', 'cities.id AS cityId', 'cities.name AS city');
+
+        return Business::with(['city', 'status', 'categories', 'tags']);
+
     }
 
-    // TODO: Use ELOQUENT to delete for iterations
-    //TODO: return preferred link as link
     public function businessElementsQuery($businesses) {
         foreach ($businesses as $business) {
-            $categories = DB::table('business_categories')
-                ->join('categories', 'categories.id', '=', 'business_categories.category')
-                ->where('business_categories.business', '=', $business->id)
-                ->select('categories.id', 'categories.value')
-                ->get();
-
-            $tags = DB::table('business_tags')
-                ->join('tags', 'business_tags.tag', '=', 'tags.id')
-                ->where('business_tags.business', '=', $business->id )
-                ->select('tags.value AS tag')
-                ->get();
-
             $links = DB::table('business_links')
                 ->join('links', 'links.id', '=', 'business_links.link')
                 ->join('link_data_types', 'link_data_types.id', '=', 'links.data_type')
                 ->where('business_links.business', '=', $business->id)
                 ->select('links.name', 'links.imagePath AS imageUrl', 'link_data_types.value AS dataType', 'business_links.value', 'business_links.id')
                 ->get();
-
-            $business->tags = $tags;
-
-            $business->categories = $categories;
 
             $business->links = $links;
         }
@@ -90,11 +75,10 @@ class BusinessController extends Controller
     public function index()
     {
         $allBusiness = $this->getQuery()
-            ->where('businesses.status', '=', 'Active')
             ->get();
-        $finalBusiness = $this->businessElementsQuery($allBusiness);
+        $allBusiness = $this->businessElementsQuery($allBusiness);
 
-        return response()->json($finalBusiness->toArray(), 200);
+        return response()->json($allBusiness->toArray(), 200);
     }
 
     /**
@@ -105,14 +89,12 @@ class BusinessController extends Controller
     public function showAllWithStatus($status)
     {
         if($status == 'all') {
-            $allBusiness = $this->getQuery()
-                                ->get();
+            $allBusiness = Business::withoutGlobalScopes()
+                ->with(['city', 'status', 'categories', 'tags'])
+                ->get();
 
-
-
-            $finalBusiness = $this->businessElementsQuery($allBusiness);
-
-            return response()->json($finalBusiness->toArray(), 200);
+            $allBusiness = $this->businessElementsQuery($allBusiness);
+            return response()->json($allBusiness->toArray(), 200);
         }
         $allBusiness = $this->getQuery()
             ->where('business_statuses.value', '=', $status)
@@ -144,14 +126,16 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        $business = $this->getQuery()
-            ->where('businesses.id','=', $id)
+        $business = Business::withoutGlobalScopes()
+            ->with(['city', 'status', 'categories', 'tags'])
+            ->where('businesses.id', '=', $id)
             ->get();
+
         if (count($business) == 0) {
             return response()->json(['error' => 'Business not found'], 404);
         }
-        $finalBusiness = $this->businessElementsQuery($business);
-        return $finalBusiness;
+        $business = $this->businessElementsQuery($business);
+        return $business;
 
     }
 
@@ -166,7 +150,7 @@ class BusinessController extends Controller
     {
         $this->statusValidator($request->all())->validate();
 
-        $business = Business::find($id);
+        $business = Business::withoutGlobalScopes()->findOrFail($id);
 
         $data = $request->all();
         $idStatus = DB::table('business_statuses')
@@ -185,12 +169,18 @@ class BusinessController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @param  Business  $business
+     * @return \Illuminate\Http\JsonResponse
      */
     public function destroy($id)
     {
-        //
+        $business = Business::withoutGlobalScopes()->findOrFail($id);
+        if (request()->user()->id == $business->user_id || request()->user()->admin) {
+            $business->delete();
+            return response()->json(['Message' => 'Business Deleted'], 202);
+        } else {
+            return response()->json(['error' => 'You do not have permission to delete this business'], 401);
+        }
     }
 
     // Controller internal operations
@@ -208,7 +198,6 @@ class BusinessController extends Controller
             'name'          => ['required'],
             'description'   => ['required'],
             'address'       => ['required'],
-            //TODO: Set preferred link id from link table
             'email'         => ['required'],
             'latitude'      => ['required'],
             'longitude'     => ['required'],

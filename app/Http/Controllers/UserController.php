@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Business;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Business\BusinessController;
 
 class UserController extends Controller
 {
@@ -58,7 +60,8 @@ class UserController extends Controller
 
     public function getBusinesses($id) {
         $businessController = new BusinessController();
-        $businesses = $businessController->getQuery()
+        $businesses = Business::withoutGlobalScopes()
+            ->with(['city', 'status', 'categories', 'tags'])
             ->where('user_id', '=', $id)
             ->get();
 
