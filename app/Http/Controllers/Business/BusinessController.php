@@ -115,7 +115,7 @@ class BusinessController extends Controller
 
         $business = $this->create($request->all());
 
-        return response()->json($business, 201);
+        return response()->json($this->show($business->id), 201);
     }
 
     /**
@@ -126,14 +126,16 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        $business = $this->getQuery()
-            ->where('businesses.id','=', $id)
+        $business = Business::withoutGlobalScopes()
+            ->with(['city', 'status', 'categories', 'tags'])
+            ->where('businesses.id', '=', $id)
             ->get();
+
         if (count($business) == 0) {
             return response()->json(['error' => 'Business not found'], 404);
         }
-        $finalBusiness = $this->businessElementsQuery($business);
-        return $finalBusiness;
+        $business = $this->businessElementsQuery($business);
+        return $business;
 
     }
 
