@@ -115,7 +115,7 @@ class BusinessController extends Controller
 
         $business = $this->create($request->all());
 
-        return response()->json($this->show($business->id), 201);
+        return response()->json($business, 201);
     }
 
     /**
