@@ -148,21 +148,47 @@ class BusinessController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $this->statusValidator($request->all())->validate();
-
         $business = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)->findOrFail($id);
 
+        DB::beginTransaction();
+
         $data = $request->all();
-        $idStatus = DB::table('business_statuses')
-            ->select('id')
-            ->where('value', '=', $data['status'])
-            ->get();
 
-        $status = $idStatus->first();
-        $business->status = $status->id;
+        if(isset($data['name']) && $data['name'] != "") {
+            $business->name = $data['name'];
+        }
+
+        if(isset($data['description']) && $data['description'] != "") {
+            $business->description = $data['description'];
+        }
+
+//        if(isset($data['imageUrl']) && $data['imageUrl'] != "") {
+//            // TODO: Delete old image first
+//            $business->$data['imageUrl'];
+//        }
+
+//        if(isset($data['preferredLink']) && $data['preferredLink'] != "") {
+//            // TODO: Check if exists
+//            $business->preferredLink = $data['preferredLink'];
+//        }
+
+        if(isset($data['email']) && $data['email'] != "") {
+            $business->email = $data['email'];
+        }
+
+//        if(isset($data['status']) && $data['status'] != "") {
+//            $idStatus = DB::table('business_statuses')
+//                ->select('id')
+//                ->where('value', '=', $data['status'])
+//                ->first();
+//
+//            $business->$idStatus->id;
+//        }
+
         $business->save();
+        DB::commit();
 
-        return response()->json($this->show($id), 202);
+       // return response()->json($this->show($id), 202);
 
     }
 
@@ -206,19 +232,6 @@ class BusinessController extends Controller
             'links'         => ['required', 'array'],
             'links.*.link'  => ['required'],
             'links.*.value'  => ['required'],
-        ]);
-    }
-
-    /**
-     * Get a validator for an incoming business creation request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function statusValidator(array $data)
-    {
-        return Validator::make($data, [
-            'status'   => ['required'],
         ]);
     }
 
