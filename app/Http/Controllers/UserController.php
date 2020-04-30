@@ -60,7 +60,7 @@ class UserController extends Controller
 
     public function getBusinesses($id) {
         $businessController = new BusinessController();
-        $businesses = Business::withoutGlobalScopes()
+        $businesses = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)
             ->with(['city', 'status', 'categories', 'tags'])
             ->where('user_id', '=', $id)
             ->get();

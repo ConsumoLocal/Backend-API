@@ -89,7 +89,7 @@ class BusinessController extends Controller
     public function showAllWithStatus($status)
     {
         if($status == 'all') {
-            $allBusiness = Business::withoutGlobalScopes()
+            $allBusiness = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)
                 ->with(['city', 'status', 'categories', 'tags'])
                 ->get();
 
@@ -126,7 +126,7 @@ class BusinessController extends Controller
      */
     public function show($id)
     {
-        $business = Business::withoutGlobalScopes()
+        $business = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)
             ->with(['city', 'status', 'categories', 'tags'])
             ->where('businesses.id', '=', $id)
             ->get();
@@ -150,7 +150,7 @@ class BusinessController extends Controller
     {
         $this->statusValidator($request->all())->validate();
 
-        $business = Business::withoutGlobalScopes()->findOrFail($id);
+        $business = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)->findOrFail($id);
 
         $data = $request->all();
         $idStatus = DB::table('business_statuses')
@@ -174,7 +174,7 @@ class BusinessController extends Controller
      */
     public function destroy($id)
     {
-        $business = Business::withoutGlobalScopes()->findOrFail($id);
+        $business = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)->findOrFail($id);
         if (request()->user()->id == $business->user_id || request()->user()->admin) {
             $business->delete();
             return response()->json(['Message' => 'Business Deleted'], 202);
