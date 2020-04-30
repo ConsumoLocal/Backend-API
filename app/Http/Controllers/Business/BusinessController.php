@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Business;
 
 use App\Business;
 use App\BusinessCategory;
+use App\BusinessStatus;
 use App\Http\Controllers\Controller;
 use App\Scopes\ActiveBusinessScope;
 use Illuminate\Http\Request;
@@ -144,7 +145,7 @@ class BusinessController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
@@ -176,19 +177,24 @@ class BusinessController extends Controller
             $business->email = $data['email'];
         }
 
-//        if(isset($data['status']) && $data['status'] != "") {
-//            $idStatus = DB::table('business_statuses')
-//                ->select('id')
-//                ->where('value', '=', $data['status'])
-//                ->first();
-//
-//            $business->$idStatus->id;
-//        }
+        if(isset($data['status']) && $data['status'] != "") {
+            $statusValue = ucfirst($data['status']);
+            $newStatus = BusinessStatus::all()
+                ->where('value', '=', $statusValue)
+                ->first();
+
+            if(!isset($newStatus)) {
+                return response()->json(
+                    ['error' => 'Wrong status received'], 422);
+            }
+
+            $business->status = $newStatus->id;
+        }
 
         $business->save();
         DB::commit();
 
-       // return response()->json($this->show($id), 202);
+        return response()->json($this->show($id), 202);
 
     }
 
