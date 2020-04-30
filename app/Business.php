@@ -28,6 +28,7 @@ class Business extends Model
     public static function booted()
     {
         static::addGlobalScope(new ActiveBusinessScope());
+        static::bootSoftDeletes();
     }
 
     protected $hidden = ['deleted_at', 'pivot'];
