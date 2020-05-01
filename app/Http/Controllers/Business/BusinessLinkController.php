@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Business;
 
+use App\Business;
 use App\BusinessLink;
 use App\Http\Controllers\Controller;
+use App\Link;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 
@@ -41,7 +43,29 @@ class BusinessLinkController extends Controller
     }
 
     public function storeLink(Request $request) {
+        $this->linkValidator($request->all())->validate();
+        $data = $request->all();
+        $business = Business::findOrFail($data['business'])->first();
 
+        $currentUser = $request->user();
+
+        $link = Link::find($data['link'])->first();
+        if(!isset($link)) {
+            return response()->json(['error' => 'The provided link is invalid'], 422);
+        }
+
+        if($business->user_id == $currentUser->id || $currentUser->admin) {
+            $link = BusinessLink::create([
+                'business'  => $business->id,
+                'link'      => $link->id,
+                'value'     => $data['value']
+            ]);
+
+            return response()->json($link, 201);
+
+        } else {
+            return response()->json(['error' => 'You are not authorized to add this link'], 401);
+        }
     }
 
     /**
@@ -82,6 +106,14 @@ class BusinessLinkController extends Controller
         ]);
     }
 
+    function linkValidator($data) {
+        return Validator::make($data, [
+            'value'   => ['required'],
+            'business'   => ['required'],
+            'link'   => ['required']
+        ]);
+    }
+
     /**
      * Remove the specified resource from storage.
      *
@@ -92,4 +124,5 @@ class BusinessLinkController extends Controller
     {
         //
     }
+
 }
