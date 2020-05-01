@@ -163,13 +163,14 @@ class BusinessController extends Controller
             $business->description = $data['description'];
         }
 
-//        if(isset($data['imageUrl']) && $data['imageUrl'] != "") {
-//            // TODO: Delete old image first
-//            $business->$data['imageUrl'];
-//        }
+        if(isset($data['imageUrl']) && $data['imageUrl'] != "") {
+            $actualImagePath = $business->imageUrl;
+            Storage::delete($actualImagePath);
+            $business->imageUrl = $data['imageUrl'];
+        }
 
 //        if(isset($data['preferredLink']) && $data['preferredLink'] != "") {
-//            // TODO: Check if exists
+//            $link = $business->link();
 //            $business->preferredLink = $data['preferredLink'];
 //        }
 
