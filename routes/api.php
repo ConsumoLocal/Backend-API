@@ -57,4 +57,4 @@ Route::apiResource('link', 'LinkController');
 Route::get('link/{id}/image', 'LinkController@getImage');
 
 // Business links
-Route::put('link/{id}', 'Business\BusinessLinkController@update');
+Route::put('business-link/{id}', 'Business\BusinessLinkController@update');
