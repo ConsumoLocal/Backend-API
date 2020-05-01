@@ -34,7 +34,7 @@ class Business extends Model
     protected $hidden = ['deleted_at', 'pivot'];
 
     public function user() {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function city() {
