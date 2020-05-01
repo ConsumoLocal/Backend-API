@@ -58,4 +58,9 @@ class Business extends Model
         'business',
         'tag');
     }
+
+    public function links() {
+        return $this->hasMany(BusinessLink::class, 'business');
+
+    }
 }

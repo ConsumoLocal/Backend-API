@@ -169,10 +169,16 @@ class BusinessController extends Controller
             $business->imageUrl = $data['imageUrl'];
         }
 
-//        if(isset($data['preferredLink']) && $data['preferredLink'] != "") {
-//            $link = $business->link();
-//            $business->preferredLink = $data['preferredLink'];
-//        }
+        if(isset($data['preferredLink']) && $data['preferredLink'] != "") {
+            $link = $business->links()->where('id', $data['preferredLink'])->first();
+            if(isset($link)) {
+                $business->preferredLink = $data['preferredLink'];
+            } else {
+                return response()->json(
+                    ['error' => 'The new preferred link for this business does not exist'], 422);
+            }
+
+        }
 
         if(isset($data['email']) && $data['email'] != "") {
             $business->email = $data['email'];
