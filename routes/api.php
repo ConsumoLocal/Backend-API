@@ -58,3 +58,4 @@ Route::get('link/{id}/image', 'LinkController@getImage');
 
 // Business links
 Route::put('business-link/{id}', 'Business\BusinessLinkController@update');
+Route::post('business-link', 'Business\BusinessLinkController@storeLink');

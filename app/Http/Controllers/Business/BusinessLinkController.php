@@ -9,6 +9,11 @@ use Illuminate\Support\Facades\Validator;
 
 class BusinessLinkController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -35,6 +40,10 @@ class BusinessLinkController extends Controller
         return $link->id;
     }
 
+    public function storeLink(Request $request) {
+
+    }
+
     /**
      * Display the specified resource.
      *
@@ -50,22 +59,21 @@ class BusinessLinkController extends Controller
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\BusinessLink  $businessLink
+     * @param  \App\BusinessLink  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $linkId)
+    public function update(Request $request, $id)
     {
-        // TODO: finish link update
-        print_r($linkId);
+        $currentLink = BusinessLink::findOrFail($id);
         $this->linkValueValidator($request->all())->validate();
 
-//        if (request()->user()->id == $businessLink->business()->user_id || request()->user()->admin) {
-//            $businessLink->value = $request->all()['value'];
-//            $businessLink->save();
-//            return response()->json($businessLink, 201);
-//        } else {
-//            return response()->json(['Error' => 'Missing value'], 201);
-//        }
+        if ($request->user()->id == $currentLink->business()->first()->user_id || $request->user()->admin) {
+            $currentLink->value = $request->all()['value'];
+            $currentLink->save();
+            return response()->json($currentLink, 201);
+        } else {
+            return response()->json(['error' => 'You are not authorized to change this link content'], 401);
+        }
     }
 
     function linkValueValidator($data) {
