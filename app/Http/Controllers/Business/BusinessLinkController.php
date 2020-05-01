@@ -120,9 +120,16 @@ class BusinessLinkController extends Controller
      * @param  \App\BusinessLink  $businessLink
      * @return \Illuminate\Http\Response
      */
-    public function destroy(BusinessLink $businessLink)
+    public function destroy($id)
     {
-        //
+        $businessLink= BusinessLink::findOrFail($id);
+        if (request()->user()->id == $businessLink->business()->first()->user_id || request()->user()->admin) {
+            $businessLink->delete();
+            return response()->json(['message' => 'Link deleted'], 202);
+
+        }else {
+            return response()->json(['error' => 'You are not authorized to delete this link'], 401);
+        }
     }
 
 }
