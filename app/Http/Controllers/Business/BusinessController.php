@@ -116,6 +116,8 @@ class BusinessController extends Controller
 
         $business = $this->create($request->all());
 
+        $business->sendBusinessWelcomeEmail();
+
         return response()->json($this->show($business->id), 201);
     }
 

@@ -11,14 +11,16 @@ class NewBusiness extends Notification
 {
     use Queueable;
 
+    private $idBusiness;
+
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($idBusiness)
     {
-        //
+        $this->idBusiness = $idBusiness;
     }
 
     /**

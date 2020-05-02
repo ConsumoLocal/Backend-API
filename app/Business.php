@@ -5,10 +5,12 @@ namespace App;
 use App\Scopes\ActiveBusinessScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
 
 class Business extends Model
 {
     use SoftDeletes;
+    use Notifiable;
 
     protected $fillable = [
         'id',
@@ -67,11 +69,10 @@ class Business extends Model
     /**
      * Send business welcome email.
      *
-     * @param  string  $idBusiness
      * @return void
      */
-    public function sendPasswordResetNotification($idBusiness)
+    public function sendBusinessWelcomeEmail()
     {
-        $this->notify(new Notifications\NewBusiness($idBusiness));
+        $this->notify(new Notifications\NewBusiness($this->id));
     }
 }
