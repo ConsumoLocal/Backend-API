@@ -97,8 +97,12 @@ class BusinessController extends Controller
             $allBusiness = $this->businessElementsQuery($allBusiness);
             return response()->json($allBusiness->toArray(), 200);
         }
-        $allBusiness = $this->getQuery()
-            ->where('business_statuses.value', '=', $status)
+
+        $allBusiness = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)
+            ->with(['city', 'status', 'categories', 'tags'])
+            ->whereHas('status', function($q) use ($status) {
+                $q->where('value', ucfirst($status));
+            })
             ->get();
         $finalBusiness = $this->businessElementsQuery($allBusiness);
         return response()->json($finalBusiness->toArray(), 200);
