@@ -6,23 +6,22 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
-use Illuminate\Auth\Notifications\ResetPassword as ResetPasswordNotification;
-use Illuminate\Support\Facades\DB;
+use App\Business;
 
-class ResetPassword extends Notification
+class NewBusiness extends Notification
 {
     use Queueable;
 
-
+    private $businessName;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($businessName)
     {
-
+        $this->businessName = $businessName;
     }
 
     /**
@@ -46,18 +45,16 @@ class ResetPassword extends Notification
     {
         $email = env('MAIL_USERNAME');
         $baseUrl = env('APP_URL', 'https://consumolocalmxn.com/');
-        $token = DB::table('password_resets')
-            ->where('email', '=', $notifiable->email)
-            ->select('token')
-            ->first();
+
         return (new MailMessage)
-                    ->from($email, 'Consumo Local')
-                    ->subject('Recuperación de Contraseña')
-                    ->greeting('Hola !')
-                    ->line('Haz solicitado reestablecer tu contraseña.')
-                    ->line('Si tú no realizaste esta solicitud, omite este mensaje.')
-                    ->action('Reestablecer Ahora', url($baseUrl . 'password/reset_token/' . $token->token . '/u/'. $notifiable->email))
-                    ->line('Gracias por ser parte de Consumo Local !');
+            ->from($email, 'Consumo Local')
+            ->subject('Negocio Creado')
+            ->greeting('Bienvenido: ' . $notifiable->name)
+            ->line('Hemos recibido tu solicitud para agregar tu negocio al catálogo.')
+            ->line('En breve recibirás un email de confirmación.')
+            ->line('De no recibir una respuesta en 24 horas, por favor envíanos un correo electrónico con el numbre de tu negocio y el correo de tu cuenta para darle seguimiento a tu caso:')
+            ->line('soporte@consumolocalmxn.com')
+            ->line('Gracias por ser parte de Consumo Local !');
 
     }
 

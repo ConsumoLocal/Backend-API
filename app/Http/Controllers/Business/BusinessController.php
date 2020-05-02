@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Business;
 
 use App\Business;
 use App\BusinessCategory;
+use App\BusinessStatus;
 use App\Http\Controllers\Controller;
 use App\Scopes\ActiveBusinessScope;
 use Illuminate\Http\Request;
@@ -96,8 +97,12 @@ class BusinessController extends Controller
             $allBusiness = $this->businessElementsQuery($allBusiness);
             return response()->json($allBusiness->toArray(), 200);
         }
-        $allBusiness = $this->getQuery()
-            ->where('business_statuses.value', '=', $status)
+
+        $allBusiness = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)
+            ->with(['city', 'status', 'categories', 'tags'])
+            ->whereHas('status', function($q) use ($status) {
+                $q->where('value', ucfirst($status));
+            })
             ->get();
         $finalBusiness = $this->businessElementsQuery($allBusiness);
         return response()->json($finalBusiness->toArray(), 200);
@@ -114,6 +119,10 @@ class BusinessController extends Controller
         $this->validator($request->all())->validate();
 
         $business = $this->create($request->all());
+
+        $business->sendBusinessWelcomeEmail();
+
+        DB::commit();
 
         return response()->json($this->show($business->id), 201);
     }
@@ -144,23 +153,67 @@ class BusinessController extends Controller
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
     public function update(Request $request, $id)
     {
-        $this->statusValidator($request->all())->validate();
-
         $business = Business::withoutGlobalScope(\App\Scopes\ActiveBusinessScope::class)->findOrFail($id);
 
-        $data = $request->all();
-        $idStatus = DB::table('business_statuses')
-            ->select('id')
-            ->where('value', '=', $data['status'])
-            ->get();
+        DB::beginTransaction();
 
-        $status = $idStatus->first();
-        $business->status = $status->id;
+        $data = $request->all();
+
+        if(isset($data['name']) && $data['name'] != "") {
+            $business->name = $data['name'];
+        }
+
+        if(isset($data['description']) && $data['description'] != "") {
+            $business->description = $data['description'];
+        }
+
+        if(isset($data['imageUrl']) && $data['imageUrl'] != "") {
+            $actualImagePath = $business->imageUrl;
+            Storage::delete($actualImagePath);
+            $business->imageUrl = $data['imageUrl'];
+        }
+
+        if(isset($data['preferredLink']) && $data['preferredLink'] != "") {
+            $link = $business->links()->where('id', $data['preferredLink'])->first();
+            if(isset($link)) {
+                $business->preferredLink = $data['preferredLink'];
+            } else {
+                return response()->json(
+                    ['error' => 'The new preferred link for this business does not exist'], 422);
+            }
+
+        }
+
+        if(isset($data['email']) && $data['email'] != "") {
+            $business->email = $data['email'];
+        }
+
+        if(isset($data['status']) && $data['status'] != "") {
+            $statusValue = ucfirst($data['status']);
+            $newStatus = BusinessStatus::all()
+                ->where('value', '=', $statusValue)
+                ->first();
+
+            if(!isset($newStatus)) {
+                return response()->json(
+                    ['error' => 'Wrong status received'], 422);
+            }
+
+            $business->status = $newStatus->id;
+
+            if(!isset($data['notify']) && $newStatus->id == 1) {
+                $business->sendBusinessActiveEmail();
+            } elseif(isset($data['notifyStatus']) && $data['notifyStatus'] == true && $newStatus == 1) {
+                $business->sendBusinessActiveEmail();
+            }
+        }
+
         $business->save();
+        DB::commit();
 
         return response()->json($this->show($id), 202);
 
@@ -206,19 +259,6 @@ class BusinessController extends Controller
             'links'         => ['required', 'array'],
             'links.*.link'  => ['required'],
             'links.*.value'  => ['required'],
-        ]);
-    }
-
-    /**
-     * Get a validator for an incoming business creation request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function statusValidator(array $data)
-    {
-        return Validator::make($data, [
-            'status'   => ['required'],
         ]);
     }
 
@@ -284,8 +324,6 @@ class BusinessController extends Controller
 
             $business->tags = $tags;
         }
-
-        DB::commit();
         return $business;
     }
 }

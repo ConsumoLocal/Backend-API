@@ -5,10 +5,13 @@ namespace App;
 use App\Scopes\ActiveBusinessScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 
 class Business extends Model
 {
     use SoftDeletes;
+    use Notifiable;
 
     protected $fillable = [
         'id',
@@ -34,7 +37,7 @@ class Business extends Model
     protected $hidden = ['deleted_at', 'pivot'];
 
     public function user() {
-        return $this->belongsTo(User::class, 'id', 'user_id');
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 
     public function city() {
@@ -57,5 +60,30 @@ class Business extends Model
         'business_tags',
         'business',
         'tag');
+    }
+
+    public function links() {
+        return $this->hasMany(BusinessLink::class, 'business');
+
+    }
+
+    /**
+     * Send business welcome email.
+     *
+     * @return void
+     */
+    public function sendBusinessWelcomeEmail()
+    {
+        $this->notify(new Notifications\NewBusiness($this->name));
+    }
+
+    /**
+     * Send business notification when it turns active.
+     *
+     * @return void
+     */
+    public function sendBusinessActiveEmail()
+    {
+        $this->notify(new Notifications\BusinessActive());
     }
 }
