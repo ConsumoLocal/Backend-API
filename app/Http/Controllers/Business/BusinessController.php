@@ -118,6 +118,8 @@ class BusinessController extends Controller
 
         $business->sendBusinessWelcomeEmail();
 
+        DB::commit();
+
         return response()->json($this->show($business->id), 201);
     }
 
@@ -312,8 +314,6 @@ class BusinessController extends Controller
 
             $business->tags = $tags;
         }
-
-        DB::commit();
         return $business;
     }
 }
