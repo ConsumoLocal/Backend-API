@@ -51,7 +51,7 @@ class NewBusiness extends Notification
             ->subject('Negocio Creado')
             ->greeting('Bienvenido: ' . $notifiable->name)
             ->line('Hemos recibido tu solicitud para agregar tu negocio al catálogo.')
-            ->line('En breve recibirás un email de confirmación')
+            ->line('En breve recibirás un email de confirmación.')
             ->line('De no recibir una respuesta en 24 horas, por favor envíanos un correo electrónico con el numbre de tu negocio y el correo de tu cuenta para darle seguimiento a tu caso:')
             ->line('soporte@consumolocalmxn.com')
             ->line('Gracias por ser parte de Consumo Local !');
