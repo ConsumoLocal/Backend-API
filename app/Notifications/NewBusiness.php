@@ -43,7 +43,6 @@ class NewBusiness extends Notification
      */
     public function toMail($notifiable)
     {
-        echo $this->idBusiness;
         $email = env('MAIL_USERNAME');
         $baseUrl = env('APP_URL', 'https://consumolocalmxn.com/');
 
