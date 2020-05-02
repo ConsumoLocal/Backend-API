@@ -63,4 +63,15 @@ class Business extends Model
         return $this->hasMany(BusinessLink::class, 'business');
 
     }
+
+    /**
+     * Send business welcome email.
+     *
+     * @param  string  $idBusiness
+     * @return void
+     */
+    public function sendPasswordResetNotification($idBusiness)
+    {
+        $this->notify(new Notifications\NewBusiness($idBusiness));
+    }
 }
