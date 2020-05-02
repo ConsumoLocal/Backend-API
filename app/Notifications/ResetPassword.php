@@ -45,7 +45,7 @@ class ResetPassword extends Notification
     public function toMail($notifiable)
     {
         $email = env('MAIL_USERNAME');
-        $baseUrl = env('APP_URL', 'https://consumolocalmxn.com/')
+        $baseUrl = env('APP_URL', 'https://consumolocalmxn.com/');
         $token = DB::table('password_resets')
             ->where('email', '=', $notifiable->email)
             ->select('token')
@@ -55,7 +55,7 @@ class ResetPassword extends Notification
                     ->subject('Recuperación de Contraseña')
                     ->greeting('Hola !')
                     ->line('Haz solicitado reestablecer tu contraseña, si tu no realizaste esta solicitud, puedes omitir este mensaje.')
-                    ->action('Reestablecer Ahora', $baseUrl . 'password/reset_token/' . $token->token . '/u/'. $notifiable->email)
+                    ->action('Reestablecer Ahora', url($baseUrl . 'password/reset_token/' . $token->token . '/u/'. $notifiable->email))
                     ->line('Gracias por ser parte de Consumo Local !');
 
     }
