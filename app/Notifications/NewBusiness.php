@@ -44,16 +44,16 @@ class NewBusiness extends Notification
     {
         $email = env('MAIL_USERNAME');
         $baseUrl = env('APP_URL', 'https://consumolocalmxn.com/');
+        $business = Business::find($this->id)->first();
 
         return (new MailMessage)
             ->from($email, 'Consumo Local')
             ->subject('Negocio Creado')
-            ->greeting('Bienvenido @business->name')
-            ->line('Hemos recibido tu solicitud para agregar tu negocio al catálogo')
-            ->line('en breve revisaremos tu solicitud y te notificaremos en cuanto se apruebe.')
-            ->line('En caso de no recibir una respuesta en 24 horas, puedes mandarnos un email a:')
+            ->greeting('Bienvenido ' . $business->name)
+            ->line('Hemos recibido tu solicitud para agregar tu negocio al catálogo.')
+            ->line('En breve recibirás un email de confirmación--')
+            ->line('De no recibir una respuesta en 24 horas, por favor envíanos un correo electrónico con el numbre de tu negocio y el correo de tu cuenta para darle seguimiento a tu caso:')
             ->line('soporte@consumolocalmxn.com')
-            ->line('No se que más BLA bla')
             ->line('Gracias por ser parte de Consumo Local !');
 
     }
