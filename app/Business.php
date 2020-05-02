@@ -6,6 +6,7 @@ use App\Scopes\ActiveBusinessScope;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Notifications\Notification;
 
 class Business extends Model
 {
@@ -74,5 +75,15 @@ class Business extends Model
     public function sendBusinessWelcomeEmail()
     {
         $this->notify(new Notifications\NewBusiness($this->name));
+    }
+
+    /**
+     * Send business notification when it turns active.
+     *
+     * @return void
+     */
+    public function sendBusinessActiveEmail()
+    {
+        $this->notify(new Notifications\BusinessActive());
     }
 }
