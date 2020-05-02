@@ -45,7 +45,7 @@ class NewBusiness extends Notification
     {
         $email = env('MAIL_USERNAME');
         $baseUrl = env('APP_URL', 'https://consumolocalmxn.com/');
-        $business = Business::find($this->id)->first();
+        $business = Business::find($this->idBusiness)->first();
 
         return (new MailMessage)
             ->from($email, 'Consumo Local')
