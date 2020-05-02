@@ -73,6 +73,6 @@ class Business extends Model
      */
     public function sendBusinessWelcomeEmail()
     {
-        $this->notify(new Notifications\NewBusiness($this->id));
+        $this->notify(new Notifications\NewBusiness($this->name));
     }
 }

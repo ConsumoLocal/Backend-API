@@ -12,16 +12,16 @@ class NewBusiness extends Notification
 {
     use Queueable;
 
-    private $idBusiness;
+    private $businessName;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($idBusiness)
+    public function __construct($businessName)
     {
-        $this->idBusiness = $idBusiness;
+        $this->businessName = $businessName;
     }
 
     /**
@@ -46,14 +46,11 @@ class NewBusiness extends Notification
         echo $this->idBusiness;
         $email = env('MAIL_USERNAME');
         $baseUrl = env('APP_URL', 'https://consumolocalmxn.com/');
-        $business = Business::findOrFail($this->idBusiness);
-
-        print_r($business);
 
         return (new MailMessage)
             ->from($email, 'Consumo Local')
             ->subject('Negocio Creado')
-            ->greeting('Bienvenido ' . $business->name)
+            ->greeting('Bienvenido ' . $this->businessName)
             ->line('Hemos recibido tu solicitud para agregar tu negocio al catálogo.')
             ->line('En breve recibirás un email de confirmación--')
             ->line('De no recibir una respuesta en 24 horas, por favor envíanos un correo electrónico con el numbre de tu negocio y el correo de tu cuenta para darle seguimiento a tu caso:')
