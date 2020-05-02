@@ -202,6 +202,7 @@ class BusinessController extends Controller
             $business->status = $newStatus->id;
 
             if(!isset($data['notify']) && $newStatus == '1') {
+                echo 'sending email';
                 $business->sendBusinessActiveEmail();
             } elseif(isset($data['notifyStatus']) && $data['notifyStatus'] == true && $newStatus == 1) {
                 $business->sendBusinessActiveEmail();
